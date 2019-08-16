@@ -1,37 +1,17 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-    <style>
-      #map {
-        height: 100%;
-      }
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  </head>
-  <body> 
-    <div id="map"></div>
-    <script>
-      var map;
-      var NEW_ZEALAND_BOUNDS = {
-        north: 52.334444,
-        south: 44.391111,
-        west: 22.163889,
-        east: 40.198056,
-      };
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
+var map;
+var UKRAINE_BOUNDS = {
+    north: 52.334444,
+    south: 44.391111,
+    west: 22.163889,
+    east: 40.198056,
+};
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 50.45466, lng: 30.5238},
         restriction: {
-            latLngBounds: NEW_ZEALAND_BOUNDS,
+            latLngBounds: UKRAINE_BOUNDS,
             strictBounds: false,
-          },
+        },
         zoom: 8,
         styles: [
   {
@@ -244,18 +224,4 @@
   }
 ]
         });
-        var marker = new google.maps.Marker({
-    position: {lat: 50.45466, lng: 30.5238},
-    map: map,
-    title: 'Hello World!',
-	animation: google.maps.Animation.BOUNCE,
-	draggable: false
-  });
       }
-      
-    </script>
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCrs2JD-1ER45w0o6JILgo-wmnMWm_lj4&callback=initMap"
-    async defer></script>
-  </body>
-</html>

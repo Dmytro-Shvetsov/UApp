@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+  </head>
+  <body> 
+    <div id="map"></div>
+    {% load static %}
+    <link rel="stylesheet" href="/static/css/map.css" type="text/css"/>
+    <script src="{% static 'js/map.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCrs2JD-1ER45w0o6JILgo-wmnMWm_lj4&callback=initMap" async defer></script>
+    <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDevOz4ccaGWa0v8-0ALkxADKIHca2cLnA"></script>
+    <script src="{% static 'js/userMarker.js' %}"></script>
+<script>
+</script>
+  </body>
+</html>
