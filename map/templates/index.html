@@ -6,7 +6,8 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
   </head>
-  <body> 
+  <body>
+    <div style="width: 300px; height: 300px; background-color: #ffffb6;">aa</div>
     <div id="map"></div>
     {% load static %}
     <link rel="stylesheet" href="/static/css/map.css" type="text/css"/>
@@ -28,7 +29,5 @@
           {{ region_name|lower }}Polygon.setMap(map)
       {% endfor %}
     </script>
-<script>
-</script>
   </body>
 </html>
