@@ -6,12 +6,11 @@ from uapp.settings import BASE_DIR
 
 
 def index(request):
-    reg = Region.objects.get(pk=1)
     regions_info_filepath = f'{BASE_DIR}/map/templates/ukraine.kml'
-    regions_with_cords = preprocess.preprocess_coords(regions_info_filepath)
+    regions_info = preprocess.preprocess_coords(regions_info_filepath)
+
     context = {
-        'reg': reg,
-        'regions': regions_with_cords
+        'regions_info': regions_info
     }
     return render(request, 'index.html', context)
 

@@ -14,7 +14,7 @@ class ColorClassifier:
         )
         self.cmap = cmap
 
-    def make_colormap(seq):
+    def make_colormap(self, seq):
         """Return a LinearSegmentedColormap
         seq: a sequence of floats and RGB-tuples. The floats should be increasing
         and in the interval (0,1).
@@ -31,7 +31,7 @@ class ColorClassifier:
         return mcolors.LinearSegmentedColormap('CustomMap', cdict)
 
     @staticmethod
-    def scale_dataset(self, data):
+    def scale_dataset(data):
         data = np.array(data, dtype=np.float64)
         scaled_data = minmax_scale(data)
         scaled_data = np.array([x*250 for x in scaled_data], dtype=np.float64)
