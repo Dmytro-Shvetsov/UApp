@@ -1,4 +1,6 @@
+import numpy as np
 import matplotlib.colors as mcolors
+from sklearn.preprocessing import minmax_scale
 
 
 class ColorClassifier:
@@ -27,3 +29,15 @@ class ColorClassifier:
                 cdict['green'].append([item, g1, g2])
                 cdict['blue'].append([item, b1, b2])
         return mcolors.LinearSegmentedColormap('CustomMap', cdict)
+
+    @staticmethod
+    def scale_dataset(self, data):
+        data = np.array(data, dtype=np.float64)
+        scaled_data = minmax_scale(data)
+        scaled_data = np.array([x*250 for x in scaled_data], dtype=np.float64)
+        return scaled_data
+
+    def get_colors(self, data):
+        scaled_data = self.scale_dataset(data)
+        colors = [mcolors.to_hex(self.cmap(int(x))) for x in scaled_data]
+        return colors
