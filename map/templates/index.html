@@ -20,10 +20,10 @@
           let {{ region_name|lower }} = {{ info|get_item:'coords'|safe }}
           let {{ region_name|lower }}Polygon = new google.maps.Polygon({
               paths: {{ region_name|lower }},
-              strokeColor: {{ info|get_item:'hex_color'|safe }},
+              strokeColor: '{{ info|get_item:'hex_color'|safe }}',
               strokeOpacity: 0.8,
               strokeWeight: 3,
-              fillColor: {{ info|get_item:'hex_color'|safe }},
+              fillColor: '{{ info|get_item:'hex_color'|safe }}',
               fillOpacity: 0.35
           })
           {{ region_name|lower }}Polygon.setMap(map)
