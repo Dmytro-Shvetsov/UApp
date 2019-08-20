@@ -2,7 +2,7 @@ import re
 
 
 def preprocess_coords(file_path):
-    with open(file_path, 'r') as f:
+    with open(file_path, 'r', encoding='utf-8') as f:
         all_lines = f.readlines()
         content = ''
         for l in all_lines:
