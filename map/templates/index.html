@@ -8,32 +8,19 @@
     <meta charset="utf-8">
           <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </head>
   <body>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
 
-    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
-
-{#  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#MyModal"></button>#}
-{#    <div id="MyModal" class="modal fade" role="dialog">#}
-{#        <div class="modal-dialog">#}
-{#            <div class="modal-content">#}
-{#                <div class="modal-header">Privet</div>#}
-{#                <div class="modal-body">Yasosy Biby</div>#}
-{#                <div class="modal-footer">Paka</div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#  #}
 <button class="create-marker btn btn-primary" type="button" name="button">Create Marker</button>
-  <script type="text/javascript">
-$(document).ready(function() {
-    $(".create-marker").modalForm({
-        formURL: "{% url 'create-marker' %}"
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".create-marker").modalForm({
+            formURL: "{% url 'create-marker' %}"
+        });
     });
-
-});
 </script>
-
   <div class="modal fade" tabindex="-1" role="dialog" id="modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
