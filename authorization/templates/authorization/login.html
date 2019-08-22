@@ -1,0 +1,19 @@
+{#{% extends template_path %}#}
+
+{% block content %}
+    {% if form.errors %}
+        <p>Something wrong with your input</p>
+    {% endif %}
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <label>Username:</label><br />
+        {{ form.username }} <br />
+
+        <label>Password:</label><br />
+        {{ form.password }}
+        <br />
+        <input type="submit" value="Login" /><br />
+        <input type="hidden" value="next_url" />
+    </form>
+{% endblock %}
