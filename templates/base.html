@@ -1,0 +1,57 @@
+{% load staticfiles %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <meta charset="utf-8">
+    {# Jquery #}
+    <script src="{% static 'js/jquery.js' %}"></script>
+    {# Bootstrap #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    {# Bootstrap modal forms #}
+{#    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>#}
+    {# Fancybox #}
+    {% include "fancybox/fancybox_css.html" %}
+    {# Additional css and js files #}
+    {% block additional_static_files %}
+    {% endblock %}
+</head>
+<body>
+<div class="container">
+    <nav class="navbar-expand-lg navbar-nav sticky-top navbar-light bg-light">
+        <div class="col-9 py-2 ml-5">
+            <ul class="navbar-nav mx-0">
+                <li>
+                    <a class="logo navbar-brand" href="#">
+                        <img src="#"/>
+                    </a>
+                </li>
+                <li><a class="nav-link" href="#">About</a></li>
+                <li><a class="nav-link" href="#">How it works</a></li>
+                <li><a class="nav-link" href="#">Map</a></li>
+                <li><a class="nav-link" href="#">Supporters</a></li>
+            </ul>
+        </div>
+        <div class="col-3 d-flex justify-content-center align-items-center">
+            <a data-fancybox data-type="ajax" class="fancybox log-in btn btn-secondary mx-1 text-light" href="{% url 'login' %}">Log in</a>
+            <a class="sign-up btn btn-dark text-light">Sign up</a>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid">
+    <div class="row mt-3">
+        <div class="col-2">Advertisement column 1</div>
+        <div class="col-8 content">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div class="col-2">Advertisement column 2</div>
+    </div>
+</div>
+{# Fancybox #}
+{% include "fancybox/fancybox_js.html" %}
+</body>
+</html>

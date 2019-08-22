@@ -1,33 +1,35 @@
-{% load staticfiles %}
+{% extends 'base.html' %}
 {% load custom_tags %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-  </head>
-  <body>
-    <div style="width: 300px; height: 300px; background-color: #98fb98;">aa</div>
-    <div id="map"></div>
-    <link rel="stylesheet" href="/static/css/map.css" type="text/css"/>
-    <script src="{% static 'js/map.js' %}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCrs2JD-1ER45w0o6JILgo-wmnMWm_lj4&callback=initMap" async defer></script>
-    <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDevOz4ccaGWa0v8-0ALkxADKIHca2cLnA"></script>
-    <script src="{% static 'js/userMarker.js' %}"></script>
+{% block additional_static_files %}
     <script>
-        {% for region_name, info in regions_info.items %}
-          let {{ region_name|lower }} = {{ info|get_item:'coords'|safe }}
-          let {{ region_name|lower }}Polygon = new google.maps.Polygon({
-              paths: {{ region_name|lower }},
-              strokeColor: '{{ info|get_item:'hex_color'|safe }}',
-              strokeOpacity: 0.8,
-              strokeWeight: 3,
-              fillColor: '{{ info|get_item:'hex_color'|safe }}',
-              fillOpacity: 0.35
-          })
-          {{ region_name|lower }}Polygon.setMap(map)
-      {% endfor %}
+        {% for region_name, coords in regions.items %}
+            let {{ region_name|lower }} = {{ coords|safe }}
+            let {{ region_name|lower }}Polygon = new google.maps.Polygon({
+                paths: {{ region_name|lower }},
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 3,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35
+            })
+            {{ region_name|lower }}Polygon.setMap(map)
+        {% endfor %}
     </script>
-  </body>
-</html>
+{% endblock %}
+{% block content %}
+    <button class="create-marker btn btn-primary" type="button" name="button">Create Marker</button>
+    <div id="map"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".create-marker").modalForm({
+                formURL: "{% url 'create-marker' %}"
+            });
+        });
+    </script>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+{% endblock %}
