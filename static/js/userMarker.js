@@ -9,7 +9,7 @@ if(navigator.geolocation){
             position: {lat: position.coords.latitude, lng: position.coords.longitude},
             icon: image,
             map: map,
-            title: 'Hello World!',
+            title: 'It`s you',
 	        animation: google.maps.Animation.BOUNCE,
 	        draggable: false
         });

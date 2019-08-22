@@ -13,8 +13,10 @@ from bootstrap_modal_forms.generic import BSModalCreateView
 def index(request):
     regions_info_filepath = f'{BASE_DIR}/map/templates/ukraine.kml'
     regions_with_cords = preprocess.preprocess_coords(regions_info_filepath)
+    marker = Marker.objects.all()
     context = {
-        'regions': regions_with_cords
+        'regions': regions_with_cords,
+        'markers': marker
     }
     return render(request, 'index.html', context)
 

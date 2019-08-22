@@ -33,7 +33,7 @@
 
 
     <script src="{% static 'js/map.js' %}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCrs2JD-1ER45w0o6JILgo-wmnMWm_lj4&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCrs2JD-1ER45w0o6JILgo-wmnMWm_lj4&callback=initMap"></script>
     <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDevOz4ccaGWa0v8-0ALkxADKIHca2cLnA"></script>
     <script src="{% static 'js/userMarker.js' %}"></script>
 
@@ -51,5 +51,26 @@
           {{ region_name|lower }}Polygon.setMap(map)
       {% endfor %}
     </script>
+  <script>
+   var icon = {
+        url: 'https://i.dlpng.com/static/png/1780489_preview.png',
+        scaledSize: new google.maps.Size(50, 50)
+    }
+    console.log(1);
+        {% for marker in markers %}
+          let {{ marker.name|lower }}Marker = new google.maps.Marker({
+            position: {lat: {{ marker.latitude }} ,lng: {{ marker.longitude }} },
+             icon: icon,
+             map: map,
+              title: 'Hello World!',
+	        animation: google.maps.Animation.BOUNCE,
+	        draggable: false
+          });
+            {{ marker.name|lower }}Marker.setMap(map)
+      {% endfor %}
+  console.log(12);
+
+    </script>
+
   </body>
 </html>
