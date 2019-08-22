@@ -1,7 +1,5 @@
-
-<form method="post" action="">
+<form method="POST" action="{% url 'Home' %}" id="submitMarkerForm">
     {% csrf_token %}
-
  <div class="modal-header">
     <h5 class="modal-title">Create new Marker</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -19,6 +17,11 @@
         {% endfor %}
       </div>
     {% endfor %}
+  <script>
+
+
+
+  </script>
   </div>
 
   <div class="modal-footer">

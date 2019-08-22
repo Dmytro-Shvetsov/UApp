@@ -33,8 +33,8 @@ function CenterControl(controlDiv, map) {
             url: 'https://i.dlpng.com/static/png/1780489_preview.png',
             scaledSize: new google.maps.Size(50, 50)
 }
-        //controlUI.addEventListener('click', function() {
-
+        // controlUI.addEventListener('click', function() {
+        // });
            // navigator.geolocation.getCurrentPosition(position =>{
            //   var temp = new google.maps.Marker({
            //    position: {lat: position.coords.latitude, lng: position.coords.longitude},
@@ -42,7 +42,7 @@ function CenterControl(controlDiv, map) {
            //    map: map,
            //    title: 'You are gay',
            //    draggable: true
-  // });
+  //});
         //});
          //  console.log(markers);
         //});
