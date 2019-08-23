@@ -56,7 +56,6 @@
         url: 'https://i.dlpng.com/static/png/1780489_preview.png',
         scaledSize: new google.maps.Size(50, 50)
     }
-    console.log(1);
         {% for marker in markers %}
           let {{ marker.name|lower }}Marker = new google.maps.Marker({
             position: {lat: {{ marker.latitude }} ,lng: {{ marker.longitude }} },
@@ -68,8 +67,6 @@
           });
             {{ marker.name|lower }}Marker.setMap(map)
       {% endfor %}
-  console.log(12);
-
     </script>
 
   </body>

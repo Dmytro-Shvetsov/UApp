@@ -1,10 +1,10 @@
 var map;
 var markers = [];
 var UKRAINE_BOUNDS = {
-    north: 52.334444,
-    south: 44.391111,
-    west: 22.163889,
-    east: 40.198056,
+    north: 52.734444,
+    south: 43.391111,
+    west: 21.963889,
+    east: 40.58056,
 };
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {

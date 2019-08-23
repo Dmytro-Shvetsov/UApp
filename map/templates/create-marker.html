@@ -9,8 +9,11 @@
 
   <div class="modal-body">
     {% for field in form %}
+         {% if field.name != 'latitude' %} {% if field.name != 'longitude' %}
       <div class="form-group{% if field.errors %} invalid{% endif %}">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <label for="{{ field.id_for_label }}">
+            {{ field.label }}
+        </label>
       {% if field.name == 'longitude' %}
              <script>
                  var temp;
@@ -32,6 +35,8 @@
           <p class="help-block">{{ error }}</p>
         {% endfor %}
       </div>
+        {% endif %}
+      {% endif %}
     {% endfor %}
   <script>
 
