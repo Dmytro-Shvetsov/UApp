@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% block additional_static_files %}
+    {# reCaptcha settings #}
+    <script src="https://www.google.com/recaptcha/api.js" async="" defer=""></script>
+    <script type="text/javascript" defer="">
+        let onSubmit = function (token) {
+            saveForm();
+        };
+    </script>
+    <script defer="">
+
+    let BASE_URL = "{{ BASE_URL }}";
+    {#var COMMON_ASSETS_URL = "{% static 'assets/images/' %}";#}
+    let THIS_OBJ = '';
+
+    function isRequiredFieldsPass()
+    {
+        let id_username = $("#id_username").val();
+        let id_email = $("#id_email").val();
+        let id_password1 = $("#id_password1").val();
+        let id_password2 = $("#id_password2").val();
+
+        if (id_username === undefined || id_username === null || id_username ===""){
+            let msg = "<h1>Error. Username is Required!</h1>" +
+                "<div>Please enter your username.</div>"
+            $.fancybox.open('<div>' + msg + '</div>');
+            $("#id_username").focus();
+            return false;
+        }
+
+        if (id_email === undefined || id_email === null || id_email ===""){
+            let msg = "<h1>Error. Email is Required!</h1>" +
+                "<div>Please enter your email address.</div>"
+            $.fancybox.open('<div>' + msg + '</div>');
+            $("#id_email").focus();
+            return false;
+        }
+
+        if (id_password1 === undefined || id_password1 === null || id_password1 ===""){
+            let msg = "<h1>Error. Password is Required!</h1>" +
+                "<div>Please enter your password.</div>"
+            $.fancybox.open('<div>' + msg + '</div>');
+            $("#id_password1").focus();
+            return false;
+        }
+
+        if (id_password2 === undefined || id_password2 === null || id_password2 ===""){
+            let msg = "<h1>Error. Confirm Password is Required!</h1>" +
+                "<div>Please re-type your password.</div>"
+            $.fancybox.open('<div>' + msg + '</div>');
+            $("#id_password2").focus();
+            return false;
+        }
+
+        if (id_password1 !== id_password2){
+            let msg = "<h1>Error. Password Not Match!</h1>" +
+                "<div>The two password fields didn't match.</div>"
+            $.fancybox.open('<div>' + msg + '</div>');
+            $("#id_password2").focus();
+            return false;
+        }
+        return true;
+    }
+
+    function saveForm()
+    {
+        //Get the form instance
+        let $form = $("#formSignUp");
+        if(isRequiredFieldsPass()) {
+            $.ajax({
+                method: "POST",
+                url: BASE_URL,
+                data: $form.serialize(),
+                cache: false,
+                dataType: "json",
+                beforeSend: function () {
+                    //Start displaying button's working animation
+                    let loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> working...';
+                    if ($("#btnSignUp").html() !== loadingText) {
+                        $("#btnSignUp").data('original-text', $("#btnSignUp").html());
+                        $("#btnSignUp").html(loadingText);
+                    }
+
+                },
+                success: function (response) {
+                    // Reload reCaptcha
+                    grecaptcha.reset();
+                    $("#btnSignUp").html($("#btnSignUp").data('original-text')); //stop animation and switch back to original text
+``
+                    if (response.alert_type == 'success') {
+                        let msg = "<h1>" + response.alert_type + " . " + response.alert_title + ". </h1>" +
+                            "<div>" + response.alert_message + "</div>"
+                        $.fancybox.open('<div>' + msg + '</div>');
+                        location.assign(BASE_URL + "account_activation_sent/");
+                    } else {
+                        let msg
+                        if (response.form_errors === undefined || response.form_errors === null || response.form_errors ==="")
+                        {
+                            msg = "<h1>Error. " + response.alert_title + ". </h1>" +
+                            "<div>" + response.alert_message + "</div>"
+                            $.fancybox.open('<div>' + msg + '</div>');
+                        }
+                        else
+                        {
+                            msg = "<h1>Error. " + response.alert_title + ". </h1>" +
+                            "<div>" + response.alert_message + "</div>" +
+                                "<ul class='errorlist'>"
+                            for(error_key in response.form_errors)
+                            {
+                                if(response.form_errors[error_key].length > 1)
+                                {
+                                    msg += "<ul class='errorsublist'>"
+                                    for(index in response.form_errors[error_key])
+                                    {
+                                        list_value = "<li class='error'>" + response.form_errors[error_key][index] + "</li>"
+                                        msg += list_value
+                                    }
+                                    msg+="</ul>"
+                                }
+                                else
+                                {
+                                    list_value = '<li class=\'error\'>' + response.form_errors[error_key] + '</li>'
+                                    msg += list_value
+                                }
+                            }
+                            msg += "</ul>"
+                            alert(msg)
+                            $.fancybox.open('<div>' + msg + '</div>');
+                        }
+
+                        console.log(response)
+                    }
+                }
+            });
+        }
+    }
+
+</script>
+{% endblock %}
+
+{% block content %}
+    <div id="alert_message" ></div>
+    <div class="col-md-5 order-md-2 mx-auto pt-5 pb-5">
+        <div class="card box-shadow">
+            <div class="card-body">
+                <div class="py-1 text-center">
+                    <img class="d-block mx-auto mb-2 rounded d-image" data-src="{{ APP_URL_TOP_LOGO }}" alt="Logo">
+                    <h1 class="h3 mb-1 font-weight-normal">Create your {{ APP_SHORTNAME }} account</h1>
+                </div>
+
+                <form id="formSignUp" class="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-label-group">
+                        <label for="id_username">User Name</label>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="form-label-group">
+                        <label for="id_email">Email</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="form-label-group">
+                        <label for="id_password1">Password</label>
+                        {{ form.password1 }}
+                    </div>
+
+                    <div class="form-label-group">
+                        <label for="id_password2">Confirm Password</label>
+                        {{ form.password2 }}
+                    </div>
+
+                    <!-- reCaptcha place holder-->
+                    <div data-sitekey="{{ GRECAP_SITE_KEY }}" class="g-recaptcha mt-1"></div>
+                </form>
+
+                <div class="mt-1">
+                    <button  data-callback="onSubmit" class="btn btn-lg btn-primary btn-block" onclick="saveForm();" id="btnSignUp">Sign up</button>
+
+                    <div class="mt-3 mb-1 text-center">
+                        Have an account?<a href="{% url 'login' %}"> Log in</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

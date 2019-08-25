@@ -5,130 +5,150 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
 from django.shortcuts import render
-import requests
+from django.http import JsonResponse
 from .forms import SignUpForm
+from . import functions as f
+from uapp import settings as config
+from django.core.mail import send_mail
+from .tokens import account_activation_token
+import requests
 
 
-# def register_view(request):
-#
-#     if request.method == 'GET':
-#         form = SignUpForm()
-#         context = {
-#             'form': form
-#         }
-#         return render(request, 'authorization/register_form.html', context)
-#
-#     response = dict()
-#     if request.method == 'POST':
-#         form = SignUpForm(request.POST)
-#         username = request.POST.get('username')
-#         email = request.POST.get('email')
-#         password1 = request.POST.get('password1')
-#         password2 = request.POST.get('password2')
-#
-#         is_pass_valid, error_msg, error_title1 = is_password_valid(password1, password2)
-#         is_user_name_valid, error_msg2, error_title2 = is_username_valid(username)
-#
-#         if not is_user_name_valid:
-#             # Return some json response back to user
-#             data = dict_alert_msg('False', title1, msg1, 'error')
-#
-#         elif not is_pass_valid:
-#             # Return some json response back to user
-#             data = dict_alert_msg('False', title, msg, 'error')
-#
-#             # Check if email exist in our users list
-#         elif User.objects.filter(email=email):
-#             # Return some json response back to user
-#             msg = """A user with that email address already exist."""
-#             data = dict_alert_msg('False', 'Invalid Email!', msg, 'error')
-#
-#         elif User.objects.filter(username=username):
-#             # Return some json response back to user
-#             msg = """Username already taken, please try another one."""
-#             data = dict_alert_msg('False', 'Invalid Username!',
-#                                   msg, 'error')
-#
-#             # To check prohibited username match with our list
-#         elif SiteConfig.objects.filter(property_name=username):
-#             # Return some json response back to user
-#             msg = """A username you have entered is not allowed."""
-#             data = dict_alert_msg('False', 'Prohibited Username!',
-#                                   msg, 'error')
-#
-#             # To check if Prohibited email match with our list
-#         elif SiteConfig.objects.filter(property_name=email):
-#             # Return some json response back to user
-#             msg = """The email you have entered is not allowed."""
-#             data = dict_alert_msg('False', 'Prohibited Email!',
-#                                   msg, 'error')
-#
-#         else:
-#
-#             ''' Begin reCAPTCHA validation '''
-#             recaptcha_response = request.POST.get('g-recaptcha-response')
-#             data = {
-#                 'secret': settings.GRECAP_SECRET_KEY,
-#                 'response': recaptcha_response
-#             }
-#             r = requests.post(settings.GRECAP_VERIFY_URL, data=data)
-#             result = r.json()
-#             ''' End reCAPTCHA validation '''
-#
-#             if result['success']:
-#
-#                 # Validate email address if exist from an email server.
-#                 is_email_real = is_email_valid(email)
-#
-#                 if is_email_real:
-#
-#                     # Proceed with the rest of registering new user
-#                     user = form.save(commit=False)
-#                     user.is_active = False
-#                     user.save()  # Finally save the form data
-#                     user.pk  # Get the latest id
-#
-#                     current_site = get_current_site(request)
-#                     subject = 'Activate Your ' + \
-#                               str(settings.SITE_SHORT_NAME) + ' Account'
-#                     message = render_to_string(
-#                         'myroot/account/account_activation_email.html',
-#                         {
-#                             'user': user,
-#                             'domain': current_site.domain,
-#                             'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-#                             'token': account_activation_token.make_token(user),
-#                         })
-#                     user.email_user(subject, message, settings.APP_EMAIL_FROM)
-#
-#                     # Return some json response back to user
-#                     msg = """New user has been created successfully!"""
-#                     data = dict_alert_msg('True', 'Awesome', msg, 'success')
-#
-#                 else:
-#
-#                     # Return some json response back to user
-#                     msg = """Invalid or non-existed email address."""
-#                     data = dict_alert_msg('False', 'Oops, Invalid Email Address', msg, 'error')
-#
-#             else:
-#
-#                 # Return some json response back to user
-#                 msg = """Invalid reCAPTCHA, please try again."""
-#                 data = dict_alert_msg('False', 'Oops, Error', msg, 'error')
-#
-#         return JsonResponse(data)
-#
+def register_view(request):
+
+    if request.method == 'GET':
+        form = SignUpForm()
+        context = {
+            'form': form,
+            'GRECAP_SITE_KEY': config.GRECAP_SITE_KEY
+        }
+        return render(request, 'authorization/registration.html', context)
+
+    response = dict()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if not form.is_valid():
+            error_title = 'Validation error'
+            error_msg = 'Form did not validate'
+            response = f.dict_alert_msg('False', error_title, error_msg, form.errors)
+            return JsonResponse(response)
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        is_pass_valid, error_msg, error_title1 = f.is_password_valid(password1, password2)
+        is_user_name_valid, error_msg2, error_title2 = f.is_username_valid(username)
+
+        if not is_user_name_valid:
+            response = f.dict_alert_msg('False', error_title1, error_msg)
+
+        elif not is_pass_valid:
+            response = f.dict_alert_msg('False', error_title1, error_msg)
+
+        elif User.objects.filter(email=email):
+            # Check if email exist in our users list
+            error_title = 'Invalid Email!'
+            error_msg = """A user with that email address already exist."""
+            response = f.dict_alert_msg('False', error_title, error_msg)
+
+        elif User.objects.filter(username=username):
+            error_title = 'Invalid Username!'
+            error_msg = """Username already taken, please try another one."""
+            response = f.dict_alert_msg('False', error_title, error_msg)
+        else:
+            ''' Begin reCAPTCHA validation '''
+            recaptcha_response = request.POST.get('g-recaptcha-response')
+            response = {
+                'secret': config.GRECAP_SECRET_KEY,
+                'response': recaptcha_response
+            }
+            r = requests.post(config.GRECAP_VERIFY_URL, data=response)
+            result = r.json()
+            ''' End reCAPTCHA validation '''
+            if result['success']:
+                # Validate email address if exist from an email server.
+                is_email_real = f.is_email_valid(email)
+
+                if is_email_real:
+                    user = form.save(commit=False)
+                    user.is_active = False
+                    user.save()
+
+                    current_site = get_current_site(request)
+
+                    subject = 'Activate Your ' + \
+                              str(config.SITE_SHORT_NAME) + ' Account'
+                    activation_page_context = {
+                            'user': user,
+                            'domain': current_site.domain,
+                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                            'token': account_activation_token.make_token(user),
+                        }
+                    message = render_to_string(
+                        'authorization/account_activation_email.html',
+                        activation_page_context
+                        )
+                    to_list = [user.email, config.EMAIL_HOST_USER]
+                    send_mail(subject, message, config.EMAIL_HOST_USER, to_list, fail_silently=False)
+
+                    error_title = 'Awesome'
+                    error_msg = """New user has been created successfully!"""
+                    response = f.dict_alert_msg('True', error_title, error_msg,)
+                else:
+                    error_title = 'Oops, Invalid Email Address'
+                    error_msg = """Invalid or non-existed email address."""
+                    response = f.dict_alert_msg('False', error_title, error_msg)
+
+            else:
+                error_msg = """Invalid reCAPTCHA, please try again."""
+                response = f.dict_alert_msg('False', 'Oops, Error', error_msg, 'error')
+
+        # Return some json response back to user
+        return JsonResponse(response)
 
 
+def account_activation_sent(request):
+    return render(request, 'authorization/account_activation_sent.html',
+                  {'title': 'New ' + str(config.SITE_SHORT_NAME) +
+                            ' Account Activation',
+                   'meta_desc': 'New account activation.'})
 
 
+def activate(request, uidb64, token):
+    """ Function to call for new user account activation process."""
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
 
-def login(request):
-    context = {}
-    if request.is_ajax() is False:
-        context['template_path'] = 'base.html'
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        login(request, user)
+        return render(request,
+                      'authorization/account_activation_complete.html',
+                      {
+                          'title': 'New Account Activated Successfully',
+                          'meta_desc': 'New Account Activated Successfully'
+                      }
+                      )
     else:
-        context['template_path'] = 'authorization/base.html'
-    return render(request, 'authorization/templates/registration/login.html', context)
+        return render(request,
+                      'authorization/account_activation_invalid.html',
+                      {
+                          'title': 'Account Activation Failed',
+                          'meta_desc': 'Account Activation Failed'
+                      }
+                      )
+
+# def login(request):
+#     context = {}
+#     if request.is_ajax() is False:
+#         context['template_path'] = 'base.html'
+#     else:
+#         context['template_path'] = 'authorization/base.html'
+#     return render(request, 'authorization/templates/registration/login.html', context)
 

@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load bootstrap4 %}
+{% load fontawesome %}
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -15,6 +16,8 @@
 {#    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>#}
     {# Fancybox #}
     {% include "fancybox/fancybox_css.html" %}
+    {# Fontawesome icons #}
+    {% fontawesome_stylesheet %}
     {# Additional css and js files #}
     {% block additional_static_files %}
     {% endblock %}
@@ -37,7 +40,7 @@
         </div>
         <div class="col-3 d-flex justify-content-center align-items-center">
             <a class="fancybox log-in btn btn-secondary mx-1 text-light" href="#">Log in</a>
-            <a class="sign-up btn btn-dark text-light">Sign up</a>
+            <a class="sign-up btn btn-dark text-light" href="{% url 'register' %}">Sign up</a>
         </div>
     </nav>
 </div>
