@@ -89,7 +89,7 @@ def register_view(request):
                         'authorization/account_activation_email.html',
                         activation_page_context
                         )
-                    to_list = [user.email, config.EMAIL_HOST_USER]
+                    to_list = [email, config.EMAIL_HOST_USER]
                     send_mail(subject, message, config.EMAIL_HOST_USER, to_list, fail_silently=False)
 
                     error_title = 'Awesome'

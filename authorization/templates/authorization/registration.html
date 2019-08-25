@@ -21,47 +21,56 @@
         let id_password2 = $("#id_password2").val();
 
         if (id_username === undefined || id_username === null || id_username ===""){
-            let msg = "<h1>Error. Username is Required!</h1>" +
-                "<div>Please enter your username.</div>"
-            $.fancybox.open('<div>' + msg + '</div>');
+            create_fancybox_alert('fail', 'Username is Required!', 'Please enter your username.', 'Error!');
             $("#id_username").focus();
             return false;
         }
 
         if (id_email === undefined || id_email === null || id_email ===""){
-            let msg = "<h1>Error. Email is Required!</h1>" +
-                "<div>Please enter your email address.</div>"
-            $.fancybox.open('<div>' + msg + '</div>');
+            create_fancybox_alert('fail', 'Email is Required!', 'Please enter your email address.', 'Error!');
             $("#id_email").focus();
             return false;
         }
 
         if (id_password1 === undefined || id_password1 === null || id_password1 ===""){
-            let msg = "<h1>Error. Password is Required!</h1>" +
-                "<div>Please enter your password.</div>"
-            $.fancybox.open('<div>' + msg + '</div>');
+            create_fancybox_alert('fail', 'Password is Required!', 'Please enter your password.', 'Error!');
             $("#id_password1").focus();
             return false;
         }
 
         if (id_password2 === undefined || id_password2 === null || id_password2 ===""){
-            let msg = "<h1>Error. Confirm Password is Required!</h1>" +
-                "<div>Please re-type your password.</div>"
-            $.fancybox.open('<div>' + msg + '</div>');
+            create_fancybox_alert('fail', 'Confirm Password is Required!', 'Please re-type your password.', 'Error!');
             $("#id_password2").focus();
             return false;
         }
 
         if (id_password1 !== id_password2){
-            let msg = "<h1>Error. Password Not Match!</h1>" +
-                "<div>The two password fields didn't match.</div>"
-            $.fancybox.open('<div>' + msg + '</div>');
+            create_fancybox_alert('fail', 'Password Not Match!', 'The two password fields didn\'t match.', 'Error!');
             $("#id_password2").focus();
             return false;
         }
         return true;
     }
+    function create_fancybox_alert(type, title, message, footer) {
+        let alert_class;
+        if(type==='success')
+        {
+            alert_class = 'alert-success';
+        }
+        else
+        {
+            alert_class = 'alert-danger';
+        }
 
+        $.fancybox.open("<div style=\"padding:0; width: 400px; border-radius:8px;\">" +
+            "<div class=\"m-0 alert " + alert_class + "\" role=\"alert\">\n" +
+            "  <h4 class=\"alert-heading\">" + title + "</h4>\n" +
+            "  <p>"+ message +"</p>\n" +
+            "  <hr>\n" +
+            "  <p class=\"mb-0\">" + footer + "</p>\n" +
+            "</div>" +
+            "</div>");
+    }
     function saveForm()
     {
         //Get the form instance
@@ -88,47 +97,36 @@
                     $("#btnSignUp").html($("#btnSignUp").data('original-text')); //stop animation and switch back to original text
 ``
                     if (response.alert_type == 'success') {
-                        let msg = "<h1>" + response.alert_type + " . " + response.alert_title + ". </h1>" +
-                            "<div>" + response.alert_message + "</div>"
-                        $.fancybox.open('<div>' + msg + '</div>');
-                        location.assign(BASE_URL + "account_activation_sent/");
+                        create_fancybox_alert('success', response.alert_title, response.alert_message, 'Well Done!');
+                        setTimeout(location.assign(BASE_URL + "account_activation_sent/"), 2000);
                     } else {
-                        let msg
+                        let msg;
                         if (response.form_errors === undefined || response.form_errors === null || response.form_errors ==="")
                         {
-                            msg = "<h1>Error. " + response.alert_title + ". </h1>" +
-                            "<div>" + response.alert_message + "</div>"
-                            $.fancybox.open('<div>' + msg + '</div>');
+                            create_fancybox_alert('fail', response.alert_title, response.alert_message, 'Error!');
                         }
                         else
                         {
-                            msg = "<h1>Error. " + response.alert_title + ". </h1>" +
-                            "<div>" + response.alert_message + "</div>" +
-                                "<ul class='errorlist'>"
+                            msg = "<ul class='errorlist'>";
                             for(error_key in response.form_errors)
                             {
                                 if(response.form_errors[error_key].length > 1)
                                 {
-                                    msg += "<ul class='errorsublist'>"
                                     for(index in response.form_errors[error_key])
                                     {
-                                        list_value = "<li class='error'>" + response.form_errors[error_key][index] + "</li>"
-                                        msg += list_value
+                                        list_value = "<li class='error'>" + response.form_errors[error_key][index] + "</li>";
+                                        msg += list_value;
                                     }
-                                    msg+="</ul>"
                                 }
                                 else
                                 {
-                                    list_value = '<li class=\'error\'>' + response.form_errors[error_key] + '</li>'
-                                    msg += list_value
+                                    list_value = '<li class=\'error\'>' + response.form_errors[error_key] + '</li>';
+                                    msg += list_value;
                                 }
                             }
-                            msg += "</ul>"
-                            alert(msg)
-                            $.fancybox.open('<div>' + msg + '</div>');
+                            msg += "</ul>";
+                            create_fancybox_alert('fail', response.alert_message, msg, response.alert_title);
                         }
-
-                        console.log(response)
                     }
                 }
             });
