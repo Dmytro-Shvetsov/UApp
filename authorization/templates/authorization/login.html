@@ -1,19 +1,123 @@
-{#{% extends template_path %}#}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block additional_static_files %}
+    {# reCaptcha settings #}
+    <script src="https://www.google.com/recaptcha/api.js" async="" defer=""></script>
+    <script type="text/javascript" defer="">
+        let onSubmit = function (token) {
+            saveForm();
+        };
+    </script>
+    <script defer="">
+        let THIS_OBJ = '';
+
+        function isRequiredFieldsPass() {
+            let id_username = $("#id_username").val();
+            let id_password = $("#id_password").val();
+
+            if (id_username === undefined || id_username === null || id_username === "") {
+                cr/autheate_fancybox_alert('fail', 'Username is Required!', 'Please enter your username.', 'Error!');
+                $("#id_username").focus();
+                return false;
+            }
+
+            if (id_password === undefined || id_password === null || id_password === "") {
+                create_fancybox_alert('fail', 'Password is Required!', 'Please enter your username password', 'Error!');
+                $("#id_password2").focus();
+                return false;
+            }
+            return true;
+        }
+
+        function create_fancybox_alert(type, title, message, footer) {
+            let alert_class;
+            if (type === 'success') {
+                alert_class = 'alert-success';
+            } else {
+                alert_class = 'alert-danger';
+            }
+
+            $.fancybox.open("<div style=\"padding:0; width: 400px; border-radius:8px;\">" +
+                "<div class=\"m-0 alert " + alert_class + "\" role=\"alert\">\n" +
+                "  <h4 class=\"alert-heading\">" + title + "</h4>\n" +
+                "  <p>" + message + "</p>\n" +
+                "  <hr>\n" +
+                "  <p class=\"mb-0\">" + footer + "</p>\n" +
+                "</div>" +
+                "</div>");
+        }
+
+        function saveForm() {
+            //Get the form instance
+            let $form = $("#formLogin");
+            console.log($form.serialize())
+            if (isRequiredFieldsPass()) {
+                $.ajax({
+                    method: "POST",
+                    url: "",
+                    data: $form.serialize(),
+                    cache: false,
+                    dataType: "json",
+                    beforeSend: function () {
+                        //Start displaying button's working animation
+                        let loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> working...';
+                        if ($("#btnSignUp").html() !== loadingText) {
+                            $("#btnSignUp").data('original-text', $("#btnSignUp").html());
+                            $("#btnSignUp").html(loadingText);
+                        }
+                    },
+                    success: function (response) {
+                        // Reload reCaptcha
+                        grecaptcha.reset();
+                        $("#btnSignUp").html($("#btnSignUp").data('original-text')); //stop animation and switch back to original text
+                        ``
+                        if (response.alert_type == 'success') {
+                            create_fancybox_alert('success', response.alert_title, response.alert_message, 'Well Done!');
+                            setTimeout(window.location.replace('/'), 5000);
+                        } else {
+                            create_fancybox_alert('fail', response.alert_title, response.alert_message, 'Error!');
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}
 
 {% block content %}
-    {% if form.errors %}
-        <p>Something wrong with your input</p>
-    {% endif %}
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-
-        <label>Username:</label><br />
-        {{ form.username }} <br />
-
-        <label>Password:</label><br />
-        {{ form.password }}
-        <br />
-        <input type="submit" value="Login" /><br />
-        <input type="hidden" value="next_url" />
-    </form>
+    <div class="col-md-5 order-md-2 mx-auto">
+        <div class="card box-shadow">
+            <div class="card-body">
+                <div class="py-1 text-center">
+                    <img class="mb-4" src="{% static 'images/login_img.svg' %}" style="width: 100%; height: 100px;" />
+                    <h1 class="h3 mb-2 font-weight-normal">Welcome Back</h1>
+                </div>
+                <form id="formLogin" class="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-label-group mb-1">
+                        <label for="id_username">User Name</label></div>
+                        {{ form.username }}
+                    <div class="form-label-group">
+                        <label for="id_password">Password</label></div>
+                        {{ form.password }}
+                    <div class="checkbox mb-2">
+                        <div class="custom-control custom-checkbox">
+                            <input id="chkKeepMe" name="chkKeepMe" type="checkbox" class="custom-control-input">
+                            <label class="custom-control-label" for="chkKeepMe">Remember me</label></div>
+                    </div>
+                    <!-- reCaptcha place holder-->
+                    <div data-sitekey="{{ GRECAP_SITE_KEY }}" class="g-recaptcha mt-1 mb-2"></div>
+                </form>
+                <div class="">
+                    <button class="btn btn-lg btn-primary btn-block" onclick="saveForm();" id="btnSignIn">Sign in
+                    </button>
+                    <div class="mt-3 text-center">
+                        <p class="mb-0"><a href="{% url 'password_reset' %}">Forgot your Password?</a>
+                            Don't have an account? <a href="{% url 'register' %}">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+

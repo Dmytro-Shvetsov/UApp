@@ -1,0 +1,12 @@
+.mynavbar li{
+    font-size: 20px;
+    margin-right: 10px !important;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 0;
+    cursor: pointer
+}
+.fa-container i:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}

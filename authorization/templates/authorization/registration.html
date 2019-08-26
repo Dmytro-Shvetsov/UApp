@@ -10,7 +10,6 @@
     <script defer="">
 
     let BASE_URL = "{{ BASE_URL }}";
-    {#var COMMON_ASSETS_URL = "{% static 'assets/images/' %}";#}
     let THIS_OBJ = '';
 
     function isRequiredFieldsPass()
@@ -71,6 +70,13 @@
             "</div>" +
             "</div>");
     }
+    function getCookie(name) {
+              let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+              ));
+              return matches ? decodeURIComponent(matches[1]) : undefined;
+            }
+            alert(getCookie('csrftoken'))
     function saveForm()
     {
         //Get the form instance

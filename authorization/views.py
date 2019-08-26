@@ -1,18 +1,20 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.http import HttpResponseRedirect
 from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
-from django.shortcuts import render
+from django.template import RequestContext
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .forms import SignUpForm
+from .forms import SignUpForm, LoginAuthenticationForm
 from . import functions as f
 from uapp import settings as config
 from django.core.mail import send_mail
 from .tokens import account_activation_token
 import requests
-
+from django.views.decorators.cache import never_cache
 
 def register_view(request):
 
@@ -144,11 +146,103 @@ def activate(request, uidb64, token):
                       }
                       )
 
-# def login(request):
-#     context = {}
-#     if request.is_ajax() is False:
-#         context['template_path'] = 'base.html'
-#     else:
-#         context['template_path'] = 'authorization/base.html'
-#     return render(request, 'authorization/templates/registration/login.html', context)
 
+def login_view(request):
+    if request.user.is_authenticated:
+        # User has been Authenticated: redirect to the specified landing page instead
+        return redirect(config.LOGIN_REDIRECT_URL)
+    else:
+        if request.method == 'GET':
+            # Get login form to display
+            form = LoginAuthenticationForm()
+            return render(request, 'authorization/login.html',
+                          {'form': form,
+                           'title': 'Log in',
+                           'meta_desc': config.SITE_SHORT_NAME + """ Account.
+                           Sign in to access your account.""",
+                           'GRECAP_SITE_KEY': config.GRECAP_SITE_KEY
+                           },
+                          )
+
+        response = dict()
+        if request.method == 'POST':
+            form = LoginAuthenticationForm(request.POST)
+            username = request.POST.get('username', '').strip()
+            password = request.POST.get('password', '').strip()
+            chkKeepMe = request.POST.get('chkKeepMe')
+
+            if username and password:
+
+                ''' Begin reCAPTCHA validation '''
+                recaptcha_response = request.POST.get('g-recaptcha-response')
+                response = {
+                    'secret': config.GRECAP_SECRET_KEY,
+                    'response': recaptcha_response
+                }
+                r = requests.post(config.GRECAP_VERIFY_URL, data=response)
+                result = r.json()
+
+                ''' End reCAPTCHA validation '''
+                if result['success']:
+                    # Check remember me checkbox option
+                    if chkKeepMe == "true":
+                        request.session.set_expiry(2592000)  # 30 days
+                    else:
+                        # session will expire on 12 hrs
+                        request.session.set_expiry(43200)
+
+                    # Test username/password combination
+                    user = authenticate(username=username, password=password)
+
+                    if user is not None:
+
+                        # User is active
+                        if user.is_active:
+                            # Login Successfully Authenticated
+                            login(request, user)
+
+                            alert_title = 'Login Successfully'
+                            alert_message = """User has been successfully login."""
+                            response = f.dict_alert_msg('True', alert_title,
+                                                  alert_message)
+
+                            response["BASE_URL"] = config.BASE_URL
+
+                            # Check /next/ url parameter
+                            next_url = request.GET.get('next')
+                            if next_url:
+                                # Strip off "/" at the first string position
+                                response["redirect_url"] = next_url[1:]
+                            else:
+                                response["redirect_url"] = config.LOGIN_REDIRECT_URL
+
+                        else:
+                            # Account is not Active
+                            alert_title = 'Account is not Active'
+                            alert_message = """Sorry, your account is not active, please
+                            check your email inbox to verify your account."""
+                            response = f.dict_alert_msg('False', alert_title,
+                                                  alert_message)
+                    else:
+                        # Invalid username or password
+                        alert_title = 'Invalid Login'
+                        alert_message = """Please enter the correct username and password for your account.
+                        Note that both fields may be case-sensitive."""
+                        response = f.dict_alert_msg('False', alert_title, alert_message)
+                else:
+                    alert_title = 'Oops, Error'
+                    alert_message = """Invalid reCAPTCHA, please try again."""
+                    response = f.dict_alert_msg('False', alert_title, alert_message)
+
+    return JsonResponse(response)
+
+
+def password_reset_view(request):
+    pass
+
+
+def logout_view(request):
+    if request.method == 'GET':
+        logout(request)
+        # Redirect to a success page.
+        return redirect('/auth/login/')
