@@ -9,8 +9,6 @@
         };
     </script>
     <script defer="">
-        let THIS_OBJ = '';
-
         function isRequiredFieldsPass() {
             let id_username = $("#id_username").val();
             let id_password = $("#id_password").val();
@@ -69,12 +67,19 @@
                         // Reload reCaptcha
                         grecaptcha.reset();
                         $("#btnSignIn").html($("#btnSignIn").data('original-text')); //stop animation and switch back to original text
-                        ``
                         if (response.alert_type == 'success') {
                             create_fancybox_alert('success', response.alert_title, response.alert_message, 'Well Done!');
-                            setTimeout(function() {
-                                window.location.replace('/')
-                            }, 3500);
+                            let next = '{{ next }}';
+                            if (next === undefined || next === null || next === "") {
+                                setTimeout(function () {
+                                    window.location.replace('{% url 'dashboard' %}');
+                                }, 3500);
+                            } else {
+                                setTimeout(function () {
+                                    window.location.replace(next);
+                                }, 3500);
+                            }
+
                         } else {
                             create_fancybox_alert('fail', response.alert_title, response.alert_message, 'Error!');
                         }
@@ -90,17 +95,17 @@
         <div class="card box-shadow">
             <div class="card-body">
                 <div class="py-1 text-center">
-                    <img class="mb-4" src="{% static 'images/login_img.svg' %}" style="width: 100%; height: 100px;" />
+                    <img class="mb-4" src="{% static 'images/login_img.svg' %}" style="width: 100%; height: 100px;"/>
                     <h1 class="h3 mb-2 font-weight-normal">Welcome Back</h1>
                 </div>
                 <form id="formLogin" class="" method="POST">
                     {% csrf_token %}
                     <div class="form-label-group mb-1">
                         <label for="id_username">User Name</label></div>
-                        {{ form.username }}
+                    {{ form.username }}
                     <div class="form-label-group">
                         <label for="id_password">Password</label></div>
-                        {{ form.password }}
+                    {{ form.password }}
                     <div class="checkbox mb-2">
                         <div class="custom-control custom-checkbox">
                             <input id="chkKeepMe" name="chkKeepMe" type="checkbox" class="custom-control-input">
