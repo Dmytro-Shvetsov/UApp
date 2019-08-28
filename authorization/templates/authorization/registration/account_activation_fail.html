@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="py-1 text-center">
+        <h1 class="h3 mb-1 font-weight-normal">Account Activation Failed.</h1>
+        <p class="">
+            The confirmation link was invalid, possibly because it has already been used.
+            You can probably <a href="{% url 'register' %}">sign up</a> once again now.
+        </p>
+    </div>
+{% endblock %}

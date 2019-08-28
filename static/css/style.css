@@ -1,0 +1,30 @@
+.mynavbar li{
+    font-size: 20px;
+    margin-right: 10px !important;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 0;
+    cursor: pointer
+}
+.fa-container i:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+.list-group-item a{
+    display: block;
+    margin: 0 !important;
+}
+a:link{
+    text-decoration: none;
+    color: black;
+}
+a:visited{
+    color: black;
+}
+a:hover{
+    text-decoration: none !important;
+}
+.active{
+    background-color: #e6f2ff !important;
+    font-weight: bold;
+}

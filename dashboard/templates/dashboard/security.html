@@ -1,0 +1,64 @@
+<div>
+    <h2>Change Password</h2>
+    <hr />
+</div>
+<div>
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-body pt-3">
+                        <form id="formChangePassword" class="form-horizontal" method="POST">
+                            {% csrf_token %}
+
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-12 control-label">
+                                    <b>Old Password</b>
+                                </label>
+                                <div class="col-sm-12">
+                                    {{ formChangePassword.old_password }}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-12 control-label">
+                                    <b>New Password</b>
+                                </label>
+                                <div class="col-sm-12">
+                                    {{ formChangePassword.new_password1 }}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-12 control-label">
+                                    <b>Confirm Password</b>
+                                </label>
+                                <div class="col-sm-12">
+                                    {{ formChangePassword.new_password2 }}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h5>New Password Information:</h5>
+                                <p>
+                                    Your password must contain at least <b>{{ MIN_PASS_LENGTH }}</b> characters.<br />
+                                    The password must contain at least 1 digit from <b>0-9</b>.<br />
+                                    The password must contain at least 1 uppercase letter from <b>A-Z</b>.<br />
+                                    The password must contain at least 1 lowercase letter from <b>a-z</b>.<br />
+                                </p>
+                            </div>
+                        </form>
+                        <a href="{% url 'password_reset' %}">I forgot my password.</a>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-primary" onclick="saveForm('#formChangePassword', passwordChangeRequiredFieldsPass, '#btnChangePassword', '{% url 'security_page' %}');" id="btnChangePassword"><i class="far fa-save"></i> Change Password</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

@@ -1,7 +1,5 @@
-
-<form method="post" action="">
+<form method="POST" action="{% url 'Home' %}" id="submitMarkerForm">
     {% csrf_token %}
-
  <div class="modal-header">
     <h5 class="modal-title">Create new Marker</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -12,12 +10,38 @@
   <div class="modal-body">
     {% for field in form %}
       <div class="form-group{% if field.errors %} invalid{% endif %}">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <label for="{{ field.id_for_label }}">
+            {{ field.label }}
+        </label>
+      {% if field.name == 'longitude' %}
+             <script>
+                 var temp;
+         navigator.geolocation.getCurrentPosition(position =>{
+              temp = position.coords.longitude;
+             document.getElementById('id_longitude').value = temp; });
+          </script>
+          <input readonly class="form-control-plaintext" type="text" placeholder={{ field }}
+                 </input>
+      {% endif %}
+      {% if field.name == 'latitude' %}
+            <script>
+                 var temp;
+         navigator.geolocation.getCurrentPosition(position =>{
+              temp = position.coords.latitude;
+             document.getElementById('id_latitude').value = temp; });
+          </script>
+          <input readonly class="form-control-plaintext" type="text" placeholder= {{ field }}
+                 </input>
+      {% endif %}
+      {% if field.name != 'latitude' %} {% if field.name != 'longitude' %}
         {{ field }}
+      {% endif %}
+      {% endif %}
         {% for error in field.errors %}
           <p class="help-block">{{ error }}</p>
         {% endfor %}
       </div>
+
     {% endfor %}
   </div>
 
