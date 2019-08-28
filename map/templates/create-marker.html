@@ -9,8 +9,8 @@
 
   <div class="modal-body">
     {% for field in form %}
-         {% if field.name != 'latitude' %} {% if field.name != 'longitude' %}
       <div class="form-group{% if field.errors %} invalid{% endif %}">
+
         <label for="{{ field.id_for_label }}">
             {{ field.label }}
         </label>
@@ -21,6 +21,8 @@
               temp = position.coords.longitude;
              document.getElementById('id_longitude').value = temp; });
           </script>
+          <input readonly class="form-control-plaintext" type="text" placeholder={{ field }}
+                 </input>
       {% endif %}
       {% if field.name == 'latitude' %}
             <script>
@@ -29,14 +31,19 @@
               temp = position.coords.latitude;
              document.getElementById('id_latitude').value = temp; });
           </script>
+{#          noresize#}
+          <input readonly class="form-control-plaintext" type="text" placeholder= {{ field }}
+                 </input>
       {% endif %}
+      {% if field.name != 'latitude' %} {% if field.name != 'longitude' %}
         {{ field }}
+      {% endif %}
+      {% endif %}
         {% for error in field.errors %}
           <p class="help-block">{{ error }}</p>
         {% endfor %}
       </div>
-        {% endif %}
-      {% endif %}
+
     {% endfor %}
   <script>
 

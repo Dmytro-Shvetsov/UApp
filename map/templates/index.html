@@ -3,14 +3,6 @@
 {% load staticfiles %}
 <body>
 {% block content %}
-    <button class="create-marker btn btn-primary" type="button" name="button">Create Marker</button>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(".create-marker").modalForm({
-            formURL: "{% url 'create-marker' %}"
-        });
-    });
-</script>
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

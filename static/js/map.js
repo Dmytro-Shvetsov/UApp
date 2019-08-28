@@ -5,6 +5,39 @@ var UKRAINE_BOUNDS = {
     west: 21.963889,
     east: 40.58056,
 };
+function CenterControl(controlDiv, map) {
+
+  // Set CSS for the control border.
+  var controlUI = document.createElement('div');
+  controlUI.style.backgroundColor = '#fff';
+  controlUI.style.border = '2px solid #fff';
+  controlUI.style.borderRadius = '3px';
+  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  controlUI.style.cursor = 'pointer';
+  controlUI.style.marginBottom = '22px';
+  controlUI.style.marginTop = '7px';
+  controlUI.style.textAlign = 'center';
+  controlUI.title = 'Click to recenter the map';
+  controlDiv.appendChild(controlUI);
+
+  // Set CSS for the control interior.
+  var controlText = document.createElement('div');
+  controlText.style.color = 'rgb(25,25,25)';
+  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+  controlText.style.fontSize = '20px';
+  controlText.style.lineHeight = '43px';
+  controlText.style.paddingLeft = '5px';
+  controlText.style.paddingRight = '5px';
+  controlText.style.fontWeight ='30px';
+  controlText.innerHTML = 'CREATE MARKER';
+  controlUI.appendChild(controlText);
+  // Setup the click event listeners: simply set the map to Chicago.
+  controlUI.addEventListener('click', function() {
+          $(".create-markerDiv").modalForm({
+              formURL: 'create/'
+          });
+      });
+}
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 50.45466, lng: 30.5238},
@@ -224,4 +257,9 @@ function initMap() {
             }
         ]
     });
+     var centerControlDiv = document.createElement('div');
+     centerControlDiv.className = "create-markerDiv";
+     var centerControl = new CenterControl(centerControlDiv, map);
+     centerControlDiv.index = 1;
+     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 }

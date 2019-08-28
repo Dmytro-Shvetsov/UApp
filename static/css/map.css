@@ -1,6 +1,21 @@
 #map {
     height: 100%;
 }
+.create-marker{
+    margin-left: 50%;
+    background:#504D4D;
+    background: -webkit-linear-gradient(to right, #504D4D, #232323);
+    background:linear-gradient(to right,#504D4D, #232323);
+    color: #E3E3E3;
+    padding: 10px 30px;
+    border-radius: 5px;
+    box-shadow:0 10px 20px -2px rgba(0,0,0,.75);
+}
+#id_description{
+    overflow: scroll;
+    color: red;
+    resize: none;
+}
 html, body {
     height: 100%;
     margin: 0;

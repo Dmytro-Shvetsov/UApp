@@ -26,3 +26,4 @@ class MarkerCreateView(BSModalCreateView):
     form_class = MarkerForm
     success_message = 'Success: Marker was created.'
     success_url = reverse_lazy('Home')
+
