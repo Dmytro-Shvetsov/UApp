@@ -4,6 +4,7 @@
 <html lang="uk">
 <head>
     <title>Simple Map</title>
+    <link rel="stylesheet" href="{% static 'css/map.css' %}" type="text/css"/>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
     <meta name="viewport" content="initial-scale=1.0, width=device-width">
     <meta charset="utf-8">
@@ -19,9 +20,6 @@
     {% include "fancybox/fancybox_css.html" %}
     {# Fontawesome icons #}
     <script src="https://kit.fontawesome.com/36d449083d.js"></script>
-    {# Additional css and js files #}
-    {% block additional_static_files %}
-    {% endblock %}
 </head>
 <body>
 <header class="container">
@@ -29,13 +27,13 @@
         <div class="col-10 py-2 ml-3">
             <ul class="navbar-nav mx-0 px-3 mynavbar">
                 <li>
-                    <a class="logo navbar-brand" href="#">
+                    <a class="logo navbar-brand" href="{% url 'Home' %}">
                         <img src="#"/>
                     </a>
                 </li>
                 <li><a class="nav-link" href="#">About</a></li>
                 <li><a class="nav-link" href="#">How it works</a></li>
-                <li><a class="nav-link" href="#">Map</a></li>
+                <li><a class="nav-link" href="{% url 'map' %}">Map</a></li>
                 <li><a class="nav-link" href="#">Supporters</a></li>
             </ul>
         </div>
@@ -57,5 +55,9 @@
 </main>
 {# Fancybox #}
 {% include "fancybox/fancybox_js.html" %}
+
+{# Additional css and js files #}
+{% block additional_static_files %}
+{% endblock %}
 </body>
 </html>

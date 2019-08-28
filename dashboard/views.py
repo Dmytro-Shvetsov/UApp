@@ -57,6 +57,7 @@ def security_view(request):
         return JsonResponse(response)
 
 
+@login_required
 def profile_view(request):
     if request.method == "GET":
         return render(request, 'dashboard/profile.html')

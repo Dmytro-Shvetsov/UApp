@@ -1,52 +1,10 @@
 var map;
 var UKRAINE_BOUNDS = {
-    north: 52.334444,
-    south: 44.391111,
-    west: 22.163889,
-    east: 40.198056,
+    north: 52.734444,
+    south: 43.391111,
+    west: 21.963889,
+    east: 40.58056,
 };
-
-function CenterControl(controlDiv, map) {
-        // Set CSS for the control border.
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
-        controlUI.style.border = '15px solid #fff';
-        controlUI.style.borderRadius = '16px';
-        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.marginBottom = '22px';
-        controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to add a marker';
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior.
-        var controlText = document.createElement('div');
-        controlText.style.color = 'rgb(25,25,25)';
-        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-        controlText.style.fontSize = '32px';
-        controlText.style.lineHeight = '38px';
-        controlText.style.paddingLeft = '5px';
-        controlText.style.paddingRight = '5px';
-        controlText.innerHTML = '+';
-        controlUI.appendChild(controlText);
-        var mark = {
-            url: 'https://i.dlpng.com/static/png/1780489_preview.png',
-            scaledSize: new google.maps.Size(50, 50)
-}
-        // controlUI.addEventListener('click', function() {
-        // });
-           // navigator.geolocation.getCurrentPosition(position =>{
-           //   var temp = new google.maps.Marker({
-           //    position: {lat: position.coords.latitude, lng: position.coords.longitude},
-           //    icon: mark,
-           //    map: map,
-           //    title: 'You are gay',
-           //    draggable: true
-  //});
-        //});
-         //  console.log(markers);
-        //});
-}
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 50.45466, lng: 30.5238},
@@ -266,8 +224,4 @@ function initMap() {
             }
         ]
     });
- var centerControlDiv = document.createElement('div');
-        var centerControl = new CenterControl(centerControlDiv, map);
-        centerControlDiv.index = 1;
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 }
