@@ -12,8 +12,6 @@
     box-shadow:0 10px 20px -2px rgba(0,0,0,.75);
 }
 #id_description{
-    overflow: scroll;
-    color: red;
     resize: none;
 }
 html, body {

@@ -10,7 +10,6 @@
   <div class="modal-body">
     {% for field in form %}
       <div class="form-group{% if field.errors %} invalid{% endif %}">
-
         <label for="{{ field.id_for_label }}">
             {{ field.label }}
         </label>
@@ -31,7 +30,6 @@
               temp = position.coords.latitude;
              document.getElementById('id_latitude').value = temp; });
           </script>
-{#          noresize#}
           <input readonly class="form-control-plaintext" type="text" placeholder= {{ field }}
                  </input>
       {% endif %}
@@ -45,11 +43,6 @@
       </div>
 
     {% endfor %}
-  <script>
-
-
-
-  </script>
   </div>
 
   <div class="modal-footer">

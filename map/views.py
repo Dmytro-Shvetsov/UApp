@@ -9,7 +9,6 @@ from .forms import MarkerForm
 from .models import Marker
 from bootstrap_modal_forms.generic import BSModalCreateView
 
-
 def index(request):
     regions_info_filepath = f'{BASE_DIR}/map/templates/ukraine.kml'
     regions_info = preprocess.preprocess_coords(regions_info_filepath)

@@ -13,6 +13,7 @@ class Marker(models.Model):
     description = models.TextField(max_length=500)
     longitude = models.DecimalField(decimal_places=20, max_digits=25, null=True, blank=True)
     latitude = models.DecimalField(decimal_places=20, max_digits=25, null=True, blank=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
     marker_region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
     def __str__(self):
