@@ -50,13 +50,13 @@
           });
              m{{ marker.id }}.setMap(map);
 
-            var content{{ marker.id }} = "{{marker.description}}" ;
-             m{{ marker.id }}.addListener('click', function() {
-                 var info{{ marker.id }} = new google.maps.InfoWindow({
-                    content: content{{ marker.id }}
-                });
-                 info{{ marker.id }}.open(map, m{{ marker.id }});
-            });
+            {#var content{{ marker.id }} = "{{marker.description}}" ;#}
+            {# m{{ marker.id }}.addListener('click', function() {#}
+            {#     var info{{ marker.id }} = new google.maps.InfoWindow({#}
+            {#        content: content{{ marker.id }}#}
+            {#    });#}
+            {#     info{{ marker.id }}.open(map, m{{ marker.id }});#}
+         {#    }); #}
       {% endfor %}
     </script>
 {% endblock %}
