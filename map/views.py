@@ -9,7 +9,6 @@ from .forms import MarkerForm
 from .models import Marker
 from bootstrap_modal_forms.generic import BSModalCreateView
 
-
 def index(request):
     regions_info_filepath = f'{BASE_DIR}/map/templates/ukraine.kml'
     regions_info = preprocess.preprocess_coords(regions_info_filepath)
@@ -24,5 +23,13 @@ def index(request):
 class MarkerCreateView(BSModalCreateView):
     template_name = 'map/create-marker.html'
     form_class = MarkerForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
     success_message = 'Success: Marker was created.'
     success_url = reverse_lazy('Home')
+

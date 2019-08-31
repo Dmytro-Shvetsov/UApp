@@ -14,7 +14,6 @@
 {% endblock %}
 {% block additional_static_files %}
     {% load static %}
-    <link rel="stylesheet" href="/static/css/map.css" type="text/css"/>
     <script src="{% static 'js/map.js' %}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCrs2JD-1ER45w0o6JILgo-wmnMWm_lj4&callback=initMap"></script>
     <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDevOz4ccaGWa0v8-0ALkxADKIHca2cLnA"></script>
@@ -51,7 +50,7 @@
             var content{{ marker.id }} = '<div class="nameOfMarker"> {{ marker.name }} </div>'+
                 '<div class="markerDescription"> {{marker.description}}'+
                 '</div>'+
-                '<div class="markerImage"><img class="imageForm" src={{ BASE_DIR }}/media/{{ marker.image }}>'+
+                '<div class="markerImage"><img class="imageForm" src=media/{{ marker.image }}>'+
                 '</div>'+
                 '<div class="buttonsForm">' +
                 '<button class="formDelete">delete marker</button>' +
