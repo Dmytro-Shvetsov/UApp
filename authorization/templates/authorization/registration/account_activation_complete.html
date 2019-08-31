@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block additional_static_files %}
+<link rel="stylesheet" href="{% static 'css/center.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="py-1 text-center">
+        <h1 class="h3 mb-1 font-weight-normal">New Account Activation Completed.</h1>
+        <p class="">
+            Your password has been set. You may go ahead and <a href="{% url 'login' %}">log in</a> now.
+        </p>
+    </div>
+
+{% endblock %}

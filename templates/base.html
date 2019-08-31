@@ -4,9 +4,11 @@
 <html lang="uk">
 <head>
     <title>Simple Map</title>
-{#    <link rel="stylesheet" href="/static/css/map.css" type="text/css"/>#}
+    <link rel="stylesheet" href="{% static 'css/map.css' %}" type="text/css"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
     <meta name="viewport" content="initial-scale=1.0, width=device-width">
     <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
     {# Jquery #}
     <script src="{% static 'js/jquery.js' %}"></script>
     {# Bootstrap #}
@@ -16,43 +18,45 @@
     <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
     {# Fancybox #}
     {% include "fancybox/fancybox_css.html" %}
-    {# Additional css and js files #}
+    {# Fontawesome icons #}
+    <script src="https://kit.fontawesome.com/36d449083d.js"></script>
 </head>
 <body>
-<div class="container">
+<header class="container">
     <nav class="navbar-expand-lg navbar-nav sticky-top navbar-light bg-light">
-        <div class="col-9 py-2 ml-5">
-            <ul class="navbar-nav mx-0">
+        <div class="col-10 py-2 ml-3">
+            <ul class="navbar-nav mx-0 px-3 mynavbar">
                 <li>
-                    <a class="logo navbar-brand" href="#">
+                    <a class="logo navbar-brand" href="{% url 'Home' %}">
                         <img src="#"/>
                     </a>
                 </li>
                 <li><a class="nav-link" href="#">About</a></li>
                 <li><a class="nav-link" href="#">How it works</a></li>
-                <li><a class="nav-link" href="#">Map</a></li>
+                <li><a class="nav-link" href="{% url 'map' %}">Map</a></li>
                 <li><a class="nav-link" href="#">Supporters</a></li>
             </ul>
         </div>
-        <div class="col-3 d-flex justify-content-center align-items-center">
-            <a class="fancybox log-in btn btn-secondary mx-1 text-light" href="#">Log in</a>
-            <a class="sign-up btn btn-dark text-light">Sign up</a>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            {% if request.user.is_authenticated %}
+                <a class="fa-container" href="{% url 'dashboard' %}"><i class="fa fa-user fa-lg mr-3"></i></a>
+                <a class="fa-container" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt fa-lg pr-3"></i></a>
+            {% else %}
+                <a class="log-in btn btn-secondary mx-1 text-light" href="{% url 'login' %}">Log in</a>
+                <a class="sign-up btn btn-dark text-light" href="{% url 'register' %}">Sign up</a>
+            {% endif %}
         </div>
     </nav>
-</div>
-<div class="container-fluid">
-    <div class="row mt-3">
-        <div class="col-2">Advertisement column 1</div>
-        <div class="col-8 content">
-        </div>
-        <div class="col-2">Advertisement column 2</div>
-    </div>
-</div>
-{% block content %}
-{% endblock %}
+</header>
+<main class="page-content container my-4">
+    {% block content %}
+
+    {% endblock %}
+</main>
 {# Fancybox #}
 {% include "fancybox/fancybox_js.html" %}
 
+{# Additional css and js files #}
 {% block additional_static_files %}
 {% endblock %}
 </body>

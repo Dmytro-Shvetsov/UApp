@@ -17,11 +17,11 @@ def index(request):
         'regions_info': regions_info,
         'markers': marker
     }
-    return render(request, 'index.html', context)
+    return render(request, 'map/index.html', context)
 
 
 class MarkerCreateView(BSModalCreateView):
-    template_name = 'create-marker.html'
+    template_name = 'map/create-marker.html'
     form_class = MarkerForm
 
     def post(self, request, *args, **kwargs):

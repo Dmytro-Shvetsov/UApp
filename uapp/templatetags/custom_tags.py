@@ -13,3 +13,9 @@ def cut(string, arg):
 def get_item(dictionary, key):
     return dictionary.get(key)
 
+
+@register.filter(name='styled_fa_icon')
+def get_item(fa_icon, style):
+    index = a.find('>')
+    fa_icon = fa_icon[:index] + ' ' + style + fa_icon[index, :]
+    return fa_icon
