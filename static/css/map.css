@@ -1,18 +1,41 @@
 #map {
     height: 100%;
 }
-.create-marker{
-    margin-left: 50%;
-    background:#504D4D;
-    background: -webkit-linear-gradient(to right, #504D4D, #232323);
-    background:linear-gradient(to right,#504D4D, #232323);
-    color: #E3E3E3;
-    padding: 10px 30px;
-    border-radius: 5px;
-    box-shadow:0 10px 20px -2px rgba(0,0,0,.75);
+.nameOfMarker{
+    border-bottom: 2px solid;
+    font-size: 22px;
+    font-family: Roboto,sans-serif;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+.imageForm{
+    max-width:100%;
+}
+.markerImage{
+    margin-top:10px;
+    text-align: center;
+    bottom: 0;
+}
+.gm-style-iw-d{
+    height: 450px;
+    width: 380px;
+    max-height: 100%;
+    max-width: 100%;
+    text-align: center;
+    position:relative;
+}
+.buttonsForm{
+    margin-top:10px;
+}
+.markerDescription{
+    font-size: 14px;
+    margin-top: 3px;
+    font-family: Roboto,sans-serif;
 }
 #id_description{
     resize: none;
+}
+.formDelete{
+
 }
 html, body {
     height: 100%;

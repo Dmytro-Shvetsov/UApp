@@ -7,7 +7,6 @@ var UKRAINE_BOUNDS = {
 };
 function CenterControl(controlDiv, map) {
 
-  // Set CSS for the control border.
   var controlUI = document.createElement('div');
   controlUI.style.backgroundColor = '#fff';
   controlUI.style.border = '2px solid #fff';
@@ -15,7 +14,8 @@ function CenterControl(controlDiv, map) {
   controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
   controlUI.style.cursor = 'pointer';
   controlUI.style.marginBottom = '22px';
-  controlUI.style.marginTop = '7px';
+  controlUI.style.marginTop = '35px';
+  controlUI.style.marginLeft = '7px';
   controlUI.style.textAlign = 'center';
   controlUI.title = 'Click to create a marker';
   controlDiv.appendChild(controlUI);
@@ -31,7 +31,7 @@ function CenterControl(controlDiv, map) {
   controlText.style.fontWeight ='30px';
   controlText.innerHTML = 'CREATE MARKER';
   controlUI.appendChild(controlText);
-  // Setup the click event listeners: simply set the map to Chicago.
+
   controlUI.addEventListener('click', function() {
           $(".create-markerDiv").modalForm({
               formURL: 'create/'
@@ -39,9 +39,7 @@ function CenterControl(controlDiv, map) {
       });
 }
 function initMap() {
-    navigator.geolocation.getCurrentPosition(position => {
         map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: position.coords.latitude, lng:position.coords.longitude },
             restriction: {
                 latLngBounds: UKRAINE_BOUNDS,
                 strictBounds: false,
@@ -258,11 +256,16 @@ function initMap() {
                 }
             ]
         });
-
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            map.setCenter(pos);
+        });
         var centerControlDiv = document.createElement('div');
         centerControlDiv.className = "create-markerDiv";
         var centerControl = new CenterControl(centerControlDiv, map);
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(centerControlDiv);
-    });
 }
