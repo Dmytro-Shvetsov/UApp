@@ -51,7 +51,7 @@
             var content{{ marker.id }} = '<div class="nameOfMarker"> {{ marker.name }} </div>'+
                 '<div class="markerDescription"> {{marker.description}}'+
                 '</div>'+
-                '<div class="markerImage"><img class="imageForm" src=media/{{ marker.image }}>'+
+                '<div class="markerImage"><img class="imageForm" src={{ BASE_DIR }}/media/{{ marker.image }}>'+
                 '</div>'+
                 '<div class="buttonsForm">' +
                 '<button class="formDelete">delete marker</button>' +
