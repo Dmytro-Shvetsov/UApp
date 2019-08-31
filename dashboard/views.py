@@ -4,9 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from authorization.forms import ChangePasswordForm
 from authorization import functions as f
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
+from django.shortcuts import redirect
 from django.contrib.auth import authenticate
-
+from authorization.forms import UpdateUserProfileForm
+from authorization.functions import dict_alert_msg
+import os
 
 @login_required
 def security_view(request):
@@ -59,20 +62,61 @@ def security_view(request):
 
 @login_required
 def profile_view(request):
+    user_profile = request.user.profile
     if request.method == "GET":
-        return render(request, 'dashboard/profile.html')
+        update_profile_form = UpdateUserProfileForm(initial={
+            "first_name": user_profile.first_name or '',
+            "last_name": user_profile.last_name or '',
+            "bio": user_profile.bio or '',
+            "company": user_profile.company or "",
+            "current_position": user_profile.current_position or "",
+            "user_email_is_public": request.user.profile.user_email_is_public
+        })
+        context = {
+            'update_profile_form': update_profile_form
+        }
+        return render(request, 'dashboard/profile.html', context)
+
+    response = dict()
+    if request.method == "POST":
+        update_profile_form = UpdateUserProfileForm(request.POST, request.FILES)
+        if update_profile_form.is_valid():
+            profile_data = {}
+            f_name = update_profile_form.cleaned_data['first_name']
+            user_profile.first_name = f_name if f_name is not None else ''
+
+            l_name = update_profile_form.cleaned_data['last_name']
+            user_profile.last_name = l_name if f_name is not None else ''
+
+            bio = update_profile_form.cleaned_data['bio']
+            user_profile.bio = bio if bio is not None else ''
+
+            company = update_profile_form.cleaned_data['company']
+            user_profile.company = company if company is not None else ''
+
+            current_position = update_profile_form.cleaned_data['current_position']
+            user_profile.current_position = current_position if current_position is not None else ''
+
+            user_profile.user_email_is_public = True if 'user_email_is_public' in request.POST else False
+
+            image = update_profile_form.cleaned_data['image']
+
+            os.remove(os.path.join(settings.MEDIA_ROOT, user_profile.image.name))
+            user_profile.image = image
+            user_profile.save()
+
+            msg = 'Ви успішно оновили ваш профіль.'
+            response = dict_alert_msg('True', 'Оновлення профілю', msg)
+
+        else:
+            response = dict_alert_msg('False', 'Оновлення профілю', 'Щось пішло не так', update_profile_form.errors)
+
+    return JsonResponse(response)
 
 
 @login_required
 def dashboard_view(request):
-    page = request.GET.get('page') if request.POST.get('page') is None else request.POST.get('page')
-    if page is None:
-        return render(request, 'dashboard/index.html')
-    else:
-        if page.upper() == 'SECURITY':
-            return security_view(request)
-
-
-
-
-
+    context = {
+        'page': request.GET.get('page') if request.GET.get('page') is not None else 'profile'
+    }
+    return render(request, 'dashboard/index.html', context)

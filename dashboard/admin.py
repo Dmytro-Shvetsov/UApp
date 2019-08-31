@@ -1,3 +1,5 @@
 from django.contrib import admin
+from authorization.models import UserProfile
 
-# Register your models here.
+admin.site.site_header = 'Uapp admin panel'
+admin.site.register(UserProfile)

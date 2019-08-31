@@ -99,7 +99,6 @@ def register_view(request):
                 error_msg = """Invalid reCAPTCHA, please try again."""
                 response = f.dict_alert_msg('False', 'Oops, Error', error_msg, 'error')
 
-        # Return some json response back to user
         return JsonResponse(response)
 
 
@@ -165,7 +164,6 @@ def login_view(request):
             chkKeepMe = request.POST.get('chkKeepMe')
 
             if username and password:
-
                 ''' Begin reCAPTCHA validation '''
                 recaptcha_response = request.POST.get('g-recaptcha-response')
                 response = {

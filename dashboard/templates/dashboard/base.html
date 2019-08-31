@@ -2,6 +2,43 @@
 {% load staticfiles %}
 {% block additional_static_files %}
     <script src="{% static 'js/dashboard.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            let content_page = '{{ page }}/';
+            $('.content').load('/dashboard/' + content_page);
+            $('.list-group-item a').click(function (event) {
+                if (ajaxRequestIsLoading == false) {
+                    event.preventDefault();
+                    $(this).parent().addClass('active').siblings().removeClass('active');
+                    let page = $(this).text();
+                    let url = '/dashboard/' + page.toLowerCase();
+
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        dataType: 'html',
+                        beforeSend: function () {
+                            ajaxRequestIsLoading = true;
+                            let loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> working...';
+                            if ($(".content").html() !== loadingText) {
+                                $(".content").data('original-text', $(".content").html());
+                                $(".content").html(loadingText);
+                            }
+                        },
+                        success: function (response) {
+                            $('.content').html($("#btnSignIn").data('original-text'));
+                            $('.content').html(response);
+                        },
+                        error: function (error) {
+                            $('.content').html($("#btnSignIn").data('original-text'));
+                            $('.content').html('<h1>404. Not Found!</h1>');
+                        }
+                    });
+                    ajaxRequestIsLoading = false;
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block content %}

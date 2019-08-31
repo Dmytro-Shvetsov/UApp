@@ -14,17 +14,31 @@
     display: block;
     margin: 0 !important;
 }
-a:link{
-    text-decoration: none;
-    color: black;
+
+.list-group-item a:visited, .list-group-item a:link, .list-group-item a, .fa-container{
+    color: black !important;
 }
-a:visited{
-    color: black;
-}
-a:hover{
+.list-group-item a:hover{
     text-decoration: none !important;
 }
 .active{
     background-color: #e6f2ff !important;
     font-weight: bold;
+}
+textarea{
+    resize: none !important;
+    width: 100px;
+    height: 180px;
+}
+#profile-image{
+    position: relative;
+    height: 200px;
+}
+#profile-image input{
+    position: absolute;
+    bottom: 0;
+}
+#profile-image img{
+    width: 100%;
+    height: 100%;
 }
