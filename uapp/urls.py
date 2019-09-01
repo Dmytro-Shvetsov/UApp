@@ -13,6 +13,5 @@ urlpatterns = [
     path('auth/', include('authorization.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('create/', views.MarkerCreateView.as_view(), name='create-marker'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

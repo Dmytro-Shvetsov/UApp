@@ -10,7 +10,8 @@ class UserProfile(models.Model):
     company = models.CharField(max_length=100, null=True, blank=True)
     current_position = models.CharField(max_length=100, null=True, blank=True)
     user_email_is_public = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='profile_images', default='profile_images/default-avatar.png', blank=True)
+    image = models.ImageField(upload_to='images/profile_images', default='images/profile_images/default-avatar.png',
+                              blank=True)
 
     def __str__(self):
         return self.user.username

@@ -123,7 +123,7 @@ class UpdateUserProfileForm(forms.Form):
             'class': 'custom-control-input'})
     )
 
-    image = forms.ImageField(required=True)
+    image = forms.ImageField(required=False)
 
     class Meta:
         model = UserProfile

@@ -1,4 +1,4 @@
-<form method="POST" action="{% url 'Home' %}" id="submitMarkerForm">
+<form method="POST" enctype="multipart/form-data" action="{% url 'Home' %}" id="submitMarkerForm">
     {% csrf_token %}
  <div class="modal-header">
     <h5 class="modal-title">Create new Marker</h5>
@@ -6,7 +6,6 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-
   <div class="modal-body">
     {% for field in form %}
       <div class="form-group{% if field.errors %} invalid{% endif %}">
@@ -44,9 +43,8 @@
 
     {% endfor %}
   </div>
-
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="submit-btn btn btn-primary">Create</button>
+    <button type="submit" class="submit-btn btn btn-primary">Create</button>
   </div>
 </form>

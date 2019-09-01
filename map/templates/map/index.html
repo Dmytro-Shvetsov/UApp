@@ -14,6 +14,7 @@
 {% endblock %}
 {% block additional_static_files %}
     {% load static %}
+    <link rel="stylesheet" href="/static/css/map.css" type="text/css"/>
     <script src="{% static 'js/map.js' %}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCrs2JD-1ER45w0o6JILgo-wmnMWm_lj4&callback=initMap"></script>
     <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDevOz4ccaGWa0v8-0ALkxADKIHca2cLnA"></script>
@@ -28,8 +29,8 @@
                 strokeWeight: 3,
                 fillColor: '{{ info|get_item:'hex_color'|safe }}',
                 fillOpacity: 0.35
-            })
-            {{ region_name|lower }}Polygon.setMap(map)
+            });
+            {{ region_name|lower }}Polygon.setMap(map);
         {% endfor %}
     </script>
   <script>
@@ -42,15 +43,25 @@
             position: {lat: {{ marker.latitude }} ,lng: {{ marker.longitude }} },
              icon: icon,
              map: map,
-              title: 'Hello World!',
+              title: "{{ marker.name }}",
 	        animation: google.maps.Animation.BOUNCE,
 	        draggable: false
           });
-             m{{ marker.id }}.setMap(map);
-
+             m{{ marker.id }}.set(map);
+            var content{{ marker.id }} = '<div class="nameOfMarker"> {{ marker.name }} </div>'+
+                '<div class="markerDescription"> {{marker.description}}'+
+                '</div>'+
+                '<div class="markerImage"><img class="imageForm" src={{ BASE_DIR }}/media/{{ marker.image }}>'+
+                '</div>'+
+                '<div class="buttonsForm">' +
+                '<button class="formDelete">delete marker</button>' +
+                '</div>';
              m{{ marker.id }}.addListener('click', function() {
-
-            });
+                 var info{{ marker.id }} = new google.maps.InfoWindow({
+                    content: content{{ marker.id }}
+                });
+                 info{{ marker.id }}.open(map, m{{ marker.id }});
+             });
       {% endfor %}
     </script>
 {% endblock %}

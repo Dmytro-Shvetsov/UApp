@@ -100,9 +100,11 @@ def profile_view(request):
             user_profile.user_email_is_public = True if 'user_email_is_public' in request.POST else False
 
             image = update_profile_form.cleaned_data['image']
+            if image is not None and image.name != settings.DEFAULT_AVATAR:
+                if user_profile.image.name != settings.DEFAULT_AVATAR:
+                    os.remove(os.path.join(settings.MEDIA_ROOT, user_profile.image.name))
+                user_profile.image = image
 
-            os.remove(os.path.join(settings.MEDIA_ROOT, user_profile.image.name))
-            user_profile.image = image
             user_profile.save()
 
             msg = 'Ви успішно оновили ваш профіль.'
