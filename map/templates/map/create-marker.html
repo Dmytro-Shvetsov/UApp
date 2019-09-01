@@ -13,24 +13,12 @@
             {{ field.label }}
         </label>
       {% if field.name == 'longitude' %}
-             <script>
-                 var temp;
-         navigator.geolocation.getCurrentPosition(position =>{
-              temp = position.coords.longitude;
-             document.getElementById('id_longitude').value = temp; });
-          </script>
           <input readonly class="form-control-plaintext" type="text" placeholder={{ field }}
                  </input>
       {% endif %}
       {% if field.name == 'latitude' %}
-            <script>
-                 var temp;
-         navigator.geolocation.getCurrentPosition(position =>{
-              temp = position.coords.latitude;
-             document.getElementById('id_latitude').value = temp; });
-          </script>
-          <input readonly class="form-control-plaintext" type="text" placeholder= {{ field }}
-                 </input>
+          <input readonly class="form-control-plaintext" type="text" placeholder={{ field }}
+          </input>
       {% endif %}
       {% if field.name != 'latitude' %} {% if field.name != 'longitude' %}
         {{ field }}
@@ -39,6 +27,10 @@
         {% for error in field.errors %}
           <p class="help-block">{{ error }}</p>
         {% endfor %}
+      <script>
+             document.getElementById('id_latitude').value = currentPosition.lat;
+             document.getElementById('id_longitude').value = currentPosition.lng;
+      </script>
       </div>
 
     {% endfor %}

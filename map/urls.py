@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path('', views.index, name='map'),
     path('admin/', admin.site.urls),
+    path('create/', views.MarkerCreateView.as_view(), name='create-marker'),
 ]

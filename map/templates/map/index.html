@@ -33,35 +33,28 @@
             {{ region_name|lower }}Polygon.setMap(map);
         {% endfor %}
     </script>
-  <script>
+    <script>
    var icon = {
-        url: 'https://i.dlpng.com/static/png/1780489_preview.png',
+        url: 'http://www.hapischool.net/readingclub/wp-content/themes/remap/img/markers/cluster/m5.png',
         scaledSize: new google.maps.Size(50, 50)
     };
-        {% for marker in markers %}
-          let m{{ marker.id }} = new google.maps.Marker({
-            position: {lat: {{ marker.latitude }} ,lng: {{ marker.longitude }} },
+   var iconMarkers = {
+       url: 'https://i.dlpng.com/static/png/1780489_preview.png',
+        scaledSize: new google.maps.Size(40, 40)
+   };
+        {% for cluster in clusters %}
+          let m{{ cluster.name }} = new google.maps.Marker({
+            position: {lat: {{ cluster.latitude }} ,lng: {{ cluster.longitude }} },
              icon: icon,
              map: map,
-              title: "{{ marker.name }}",
-	        animation: google.maps.Animation.BOUNCE,
+              title: "{{ cluster.name }} oblast cluster",
 	        draggable: false
           });
-             m{{ marker.id }}.set(map);
-            var content{{ marker.id }} = '<div class="nameOfMarker"> {{ marker.name }} </div>'+
-                '<div class="markerDescription"> {{marker.description}}'+
-                '</div>'+
-                '<div class="markerImage"><img class="imageForm" src={{ BASE_DIR }}/media/{{ marker.image }}>'+
-                '</div>'+
-                '<div class="buttonsForm">' +
-                '<button class="formDelete">delete marker</button>' +
-                '</div>';
-             m{{ marker.id }}.addListener('click', function() {
-                 var info{{ marker.id }} = new google.maps.InfoWindow({
-                    content: content{{ marker.id }}
-                });
-                 info{{ marker.id }}.open(map, m{{ marker.id }});
-             });
+             m{{ cluster.name }}.set(map);
+             m{{ cluster.name }}.addListener('click', function() {
+                 loadMarkers({{cluster.id}});
+                 m{{cluster.name}}.setMap(null);
+                 });
       {% endfor %}
     </script>
 {% endblock %}

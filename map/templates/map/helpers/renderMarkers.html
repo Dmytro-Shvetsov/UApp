@@ -1,0 +1,27 @@
+<script>
+    {% for marker in markers %}
+    let m{{ marker.id }} = new google.maps.Marker({
+        position: {lat: {{ marker.latitude }}, lng: {{ marker.longitude }}},
+        icon: iconMarkers,
+        map: map,
+        title: "{{ marker.name }}",
+        animation: google.maps.Animation.BOUNCE,
+        draggable: false
+    });
+    m{{ marker.id }}.set(map);
+    var content{{ marker.id }} = '<div class="nameOfMarker"> {{ marker.name }} </div>'+
+                '<div class="markerDescription"> {{marker.description}}'+
+                '</div>'+
+                '<div class="markerImage"><img class="imageForm" src={{ BASE_DIR }}/media/{{ marker.image }}>'+
+                '</div>'+
+                '<div class="buttonsForm">' +
+                '<button class="formDelete">delete marker</button>' +
+                '</div>';
+             m{{ marker.id }}.addListener('click', function() {
+                 var info{{ marker.id }} = new google.maps.InfoWindow({
+                    content: content{{ marker.id }}
+                });
+                 info{{ marker.id }}.open(map, m{{ marker.id }});
+             });
+    {% endfor %}
+</script>

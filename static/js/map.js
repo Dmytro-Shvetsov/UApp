@@ -1,11 +1,23 @@
 var map;
+var currentPosition;
 var UKRAINE_BOUNDS = {
     north: 52.734444,
     south: 43.391111,
     west: 21.963889,
     east: 40.58056,
 };
-
+function loadMarkers(clusterId) {
+    $.ajax({
+        type: "GET",
+        url: '/map/',
+        data: {
+            'regionId': clusterId
+        },
+        success:function(response) {
+            $("body").append(response);
+        }
+    });
+}
 function CenterControl(controlDiv, map) {
 
     var controlUI = document.createElement('div');
@@ -282,16 +294,16 @@ function initMap() {
 
 function geocodeLatLng(geocoder, map, infowindow) {
     navigator.geolocation.getCurrentPosition(function (position) {
-        var pos = {
+        currentPosition = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
         };
-        geocoder.geocode({'location': pos}, function (results, status) {
+        geocoder.geocode({'location': currentPosition}, function (results, status) {
             if (status === 'OK') {
                 if (results[0]) {
                     map.setZoom(11);
-                    var userLocationInfo = results[0]['address_components'][4]['long_name'];
-                    alert(userLocationInfo)
+                    var userLocationInfo = results[0]['address_components'][3]['long_name'];
+                    console.log(userLocationInfo)
                 } else {
                     window.alert('Could not find your location');
                 }
