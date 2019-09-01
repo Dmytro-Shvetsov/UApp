@@ -290,7 +290,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
             if (status === 'OK') {
                 if (results[0]) {
                     map.setZoom(11);
-                    var userLocationInfo = results[0].formatted_address;
+                    var userLocationInfo = results[0]['address_components'][4]['long_name'];
                     alert(userLocationInfo)
                 } else {
                     window.alert('Could not find your location');
