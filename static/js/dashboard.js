@@ -1,42 +1,5 @@
 let ajaxRequestIsLoading = false;
 
-$(document).ready(function () {
-    $('.content').load('profile/');
-    $('.list-group-item a').click(function (event) {
-        if (ajaxRequestIsLoading == false) {
-            event.preventDefault();
-            $(this).parent().addClass('active').siblings().removeClass('active');
-            let page = $(this).text();
-            let data = {
-                'page': page
-            };
-            $.ajax({
-                url: page.toLowerCase() + '/',
-                method: 'GET',
-                data: data,
-                dataType: 'html',
-                beforeSend: function () {
-                    ajaxRequestIsLoading = true;
-                    let loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> working...';
-                    if ($(".content").html() !== loadingText) {
-                        $(".content").data('original-text', $(".content").html());
-                        $(".content").html(loadingText);
-                    }
-                },
-                success: function (response) {
-                    $('.content').html($("#btnSignIn").data('original-text'));
-                    $('.content').html(response);
-                },
-                error: function (error) {
-                    $('.content').html($("#btnSignIn").data('original-text'));
-                    $('.content').html('<h1>404. Not Found!</h1>');
-                }
-            });
-            ajaxRequestIsLoading = false;
-        }
-    });
-});
-
 function create_fancybox_alert(type, title, message, footer) {
     let alert_class;
     if (type === 'success') {
@@ -55,39 +18,73 @@ function create_fancybox_alert(type, title, message, footer) {
         "</div>");
 }
 
-function saveForm(formSelector, requiredFieldsFunc, btnSpinnerSelector, url = "", additional_data = "") {
+
+function saveForm(formSelector, requiredFieldsFunc, btnSpinnerSelector, url = "", additional_data = "", additional_params = {}) {
+    let data = new FormData($(formSelector).get(0));
     if (ajaxRequestIsLoading == false) {
         let $form = $(formSelector);
-        if (requiredFieldsFunc()) {
-            $.ajax({
-                method: "POST",
-                url: url,
-                data: $form.serialize() + additional_data,
-                cache: false,
-                dataType: "json",
-                beforeSend: function () {
-                    ajaxRequestIsLoading = true
-                    let loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> working...';
-                    if ($(btnSpinnerSelector).html() !== loadingText) {
-                        $(btnSpinnerSelector).data('original-text', $(btnSpinnerSelector).html());
-                        $(btnSpinnerSelector).html(loadingText);
-                    }
-                },
-                success: function (response) {
-                    $(btnSpinnerSelector).html($(btnSpinnerSelector).data('original-text')); //stop animation and switch back to original text
-                    if (response.alert_type == 'success') {
-                        create_fancybox_alert('success', response.alert_title, response.alert_message, 'Well Done!');
-                        setTimeout(function () {
-                            window.location.reload()
-                        }, 2500);
+        let params = {
+            method: "POST",
+            url: url,
+            data: data,
+            cache: false,
+            dataType: "json",
+            beforeSend: function () {
+                ajaxRequestIsLoading = true
+                let loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> working...';
+                if ($(btnSpinnerSelector).html() !== loadingText) {
+                    $(btnSpinnerSelector).data('original-text', $(btnSpinnerSelector).html());
+                    $(btnSpinnerSelector).html(loadingText);
+                }
+            },
+            success: function (response) {
+                $(btnSpinnerSelector).html($(btnSpinnerSelector).data('original-text')); //stop animation and switch back to original text
+                if (response.alert_type == 'success') {
+                    create_fancybox_alert('success', response.alert_title, response.alert_message, 'Well Done!');
+                    setTimeout(function () {
+                        window.location.reload()
+                    }, 2500);
+                } else {
+                    let msg;
+                    if (response.form_errors === undefined || response.form_errors === null || response.form_errors === "") {
+                        create_fancybox_alert('fail', response.alert_title, response.alert_message, 'Помилка!');
                     } else {
-                        create_fancybox_alert('fail', response.alert_title, response.alert_message, 'Error!');
+                        // msg = "Під час обробки профілю щось пішло не так. Спробуйте пізніше";
+                        // create_fancybox_alert('fail', response.alert_title, msg, 'Помилка!');
+                        let msg;
+                        if (response.form_errors === undefined || response.form_errors === null || response.form_errors === "") {
+                            create_fancybox_alert('fail', response.alert_title, response.alert_message, 'Error!');
+                        } else {
+                            msg = "<ul class='errorlist'>";
+                            for (error_key in response.form_errors) {
+                                if (response.form_errors[error_key].length > 1) {
+                                    for (index in response.form_errors[error_key]) {
+                                        list_value = "<li class='error'>" + response.form_errors[error_key][index] + "</li>";
+                                        msg += list_value;
+                                    }
+                                } else {
+                                    list_value = '<li class=\'error\'>' + response.form_errors[error_key] + '</li>';
+                                    msg += list_value;
+                                }
+                            }
+                            msg += "</ul>";
+                            create_fancybox_alert('fail', response.alert_message, msg, response.alert_title);
+                        }
                     }
                 }
-            });
+            }
+        };
+        $.extend(params, additional_params);
+
+        if (requiredFieldsFunc()) {
+            $.ajax(params);
             ajaxRequestIsLoading = false;
         }
     }
+}
+
+function requiredFieldsClosure() {
+    return true;
 }
 
 function passwordChangeRequiredFieldsPass() {
@@ -121,3 +118,4 @@ function passwordChangeRequiredFieldsPass() {
 
     return true;
 }
+

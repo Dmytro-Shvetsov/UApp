@@ -2,42 +2,51 @@
     height: 88vh;
     width: 100%;
 }
-.nameOfMarker{
+
+.nameOfMarker {
     border-bottom: 2px solid;
     font-size: 22px;
-    font-family: Roboto,sans-serif;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    font-family: Roboto, sans-serif;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
-.imageForm{
-    max-width:100%;
+
+.imageForm {
+    max-width: 100%;
 }
-.markerImage{
-    margin-top:10px;
+
+.markerImage {
+    margin-top: 10px;
     text-align: center;
     bottom: 0;
 }
-.gm-style-iw-d{
+
+.gm-style-iw-d {
     height: 450px;
     width: 380px;
     max-height: 100%;
     max-width: 100%;
     text-align: center;
-    position:relative;
+    position: relative;
 }
-.buttonsForm{
-    margin-top:10px;
+
+.buttonsForm {
+    margin-top: 10px;
 }
-.markerDescription{
+
+.markerDescription {
     font-size: 14px;
     margin-top: 3px;
-    font-family: Roboto,sans-serif;
+    font-family: Roboto, sans-serif;
 }
-#id_description{
+
+#id_description {
     resize: none;
 }
-.formDelete{
+
+.formDelete {
 
 }
+
 html, body {
     height: 100%;
     margin: 0;

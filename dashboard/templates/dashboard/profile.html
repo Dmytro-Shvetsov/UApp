@@ -1,1 +1,95 @@
-profile
+{% load custom_tags %}
+{% load staticfiles %}
+<div>
+    <h2>Публічний профіль</h2>
+    <hr/>
+</div>
+<div>
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-body pt-3">
+                        <form id="formUpdateProfile" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="page" value="profile"/>
+                            <div class="form-group col-sm-5 float-right align-items-center">
+                                <div class="col-sm-12" id="profile-image">
+                                    {{ update_profile_form.image }}
+                                    <img class="m-0" src="{{ user.userprofile.image.url }}" alt="User image"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <label for="id_first_name" class="col-sm-12 control-label">
+                                    <b>Ім'я</b>
+                                </label>
+
+                                <div class="col-sm-12">
+                                    {{ update_profile_form.first_name }}
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-7">
+                                <label for="id_last_name" class="col-sm-12 control-label">
+                                    <b>Прізвище</b>
+                                </label>
+                                <div class="col-sm-12">
+                                    {{ update_profile_form.last_name }}
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-7">
+                                <label for="id_bio" class="col-sm-12 control-label">
+                                    <b>Розкажіть нам про себе</b>
+                                </label>
+                                <div class="col-sm-12">
+                                    {{ update_profile_form.bio }}
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-7">
+                                <label for="id_company" class="col-sm-12 control-label">
+                                    <b>Компанія</b>
+                                </label>
+                                <div class="col-sm-12">
+                                    {{ update_profile_form.company }}
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-7">
+                                <label for="id_current_position" class="col-sm-12 control-label">
+                                    <b>Ким працюєте</b>
+                                </label>
+                                <div class="col-sm-12">
+                                    {{ update_profile_form.current_position }}
+                                </div>
+                            </div>
+
+                            <div class="checkbox mb-2 col-sm-7">
+                                <div class="custom-control custom-checkbox">
+                                    {{ update_profile_form.user_email_is_public }}
+                                    <label class="custom-control-label" for="id_user_email_is_public">
+                                        Показувати ваш
+                                        E-mail іншим
+                                        користувачам</label></div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-success" onclick="saveForm('#formUpdateProfile', function(){return true;}, '#btnUpdateProfile', '{% url 'profile_page' %}', '',
+                                    {
+                                        processData: false,
+                                        contentType: false,
+                                    });"
+                                    id="btnUpdateProfile"><i class="far fa-save"></i> Оновити профіль
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

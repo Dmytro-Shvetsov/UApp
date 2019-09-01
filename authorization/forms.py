@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django import forms
+from .models import UserProfile
 
 
 class SignUpForm(UserCreationForm):
@@ -90,3 +91,40 @@ class ChangePasswordForm(SetPasswordForm):
     class Meta:
         model = User
         fields = ('old_password', 'new_password1', 'new_password2')
+
+
+class UpdateUserProfileForm(forms.Form):
+    first_name = forms.CharField(
+        max_length=100, required=False, widget=forms.TextInput({
+            'class': 'form-control'})
+    )
+
+    last_name = forms.CharField(
+        max_length=100, required=False, widget=forms.TextInput({
+            'class': 'form-control'})
+    )
+
+    bio = forms.CharField(
+        max_length=5000, required=False, widget=forms.Textarea({
+            'class': 'form-control'})
+    )
+
+    company = forms.CharField(
+        max_length=100, required=False, widget=forms.TextInput({
+            'class': 'form-control'})
+    )
+
+    current_position = forms.CharField(
+        max_length=100, required=False, widget=forms.TextInput({
+            'class': 'form-control'})
+    )
+
+    user_email_is_public = forms.BooleanField(required=False, widget=forms.CheckboxInput({
+            'class': 'custom-control-input'})
+    )
+
+    image = forms.ImageField(required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = ('first_name', 'last_name', 'bio', 'company', 'current_position', 'user_email_is_public', 'image')
