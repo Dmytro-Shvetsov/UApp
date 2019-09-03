@@ -9,13 +9,12 @@ from .forms import MarkerForm
 from .models import Marker
 from bootstrap_modal_forms.generic import BSModalCreateView
 
-
 def index(request):
     if request.is_ajax():
         cluster_id = request.GET.get('regionId')
         markers = Marker.objects.filter(marker_region=cluster_id)
         context = {
-            'markers': markers
+            'markers': markers,
         }
         return render(request, 'map/helpers/renderMarkers.html', context)
 

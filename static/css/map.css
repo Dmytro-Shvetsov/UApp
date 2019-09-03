@@ -2,12 +2,18 @@
     height: 88vh;
     width: 100%;
 }
-
 .nameOfMarker {
     border-bottom: 2px solid;
     font-size: 22px;
     font-family: Roboto, sans-serif;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+.modal-header, .modal-footer{
+  background-color: #D2D1D1;
+}
+
+.modal-body{
+  background-color: #FCFBFB;
 }
 
 .imageForm {
@@ -19,7 +25,6 @@
     text-align: center;
     bottom: 0;
 }
-
 .gm-style-iw-d {
     height: 450px;
     width: 380px;
@@ -28,11 +33,9 @@
     text-align: center;
     position: relative;
 }
-
 .buttonsForm {
     margin-top: 10px;
 }
-
 .markerDescription {
     font-size: 14px;
     margin-top: 3px;
@@ -41,12 +44,9 @@
 
 #id_description {
     resize: none;
+    width: 430px;
+    height: 100px;
 }
-
-.formDelete {
-
-}
-
 html, body {
     height: 100%;
     margin: 0;

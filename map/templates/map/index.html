@@ -16,7 +16,7 @@
     {% load static %}
     <link rel="stylesheet" href="/static/css/map.css" type="text/css"/>
     <script src="{% static 'js/map.js' %}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB8zr2YDVYWGhgYZsEfkPDZnwOL_UF21A&callback=initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB8zr2YDVYWGhgYZsEfkPDZnwOL_UF21A&language=uk&callback=initMap"></script>
     <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDevOz4ccaGWa0v8-0ALkxADKIHca2cLnA"></script>
     <script src="{% static 'js/userMarker.js' %}"></script>
      <script>
@@ -33,7 +33,7 @@
             {{ region_name|lower }}Polygon.setMap(map);
         {% endfor %}
     </script>
-    <script>
+    <script>;
    var icon = {
         url: 'http://www.hapischool.net/readingclub/wp-content/themes/remap/img/markers/cluster/m5.png',
         scaledSize: new google.maps.Size(50, 50)

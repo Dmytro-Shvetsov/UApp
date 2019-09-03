@@ -291,7 +291,6 @@ function initMap() {
     centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.LEFT_TOP].push(centerControlDiv);
 }
-
 function geocodeLatLng(geocoder, map, infowindow) {
     navigator.geolocation.getCurrentPosition(function (position) {
         currentPosition = {
@@ -303,11 +302,112 @@ function geocodeLatLng(geocoder, map, infowindow) {
                 if (results[0]) {
                     map.setZoom(11);
                     var userLocationInfo = results[0]['address_components'][3]['long_name'];
-                    console.log(userLocationInfo)
+                    switch(userLocationInfo){
+                        case "Львівська область":
+                            loadMarkers(44);
+                            mLvivska.setMap(null);
+                            break;
+                        case "Миколаївська область":
+                            loadMarkers(28);
+                            mMykolayivska.setMap(null);
+                            break;
+                        case "Тернопільська область":
+                            loadMarkers(29);
+                            mTernopilska.setMap(null);
+                            break;
+                        case "Житомирська область":
+                            loadMarkers(30);
+                            mZhytomyrska.setMap(null);
+                            break;
+                        case "Кіровоградська область":
+                            loadMarkers(31);
+                            mKirovohradska.setMap(null);
+                            break;
+                        case "Одеська область":
+                            loadMarkers(32);
+                            mOdeska.setMap(null);
+                            break;
+                        case "Волинська область":
+                            loadMarkers(33);
+                            mVolynska.setMap(null);
+                            break;
+                        case "Київська область":
+                            loadMarkers(34);
+                            mKyivska.setMap(null);
+                            break;
+                        case "Вінницька область":
+                            loadMarkers(35);
+                            mVinnytska.setMap(null);
+                            break;
+                        case "Донецька область":
+                            loadMarkers(36);
+                             mDonetska.setMap(null);
+                             break;
+                        case "Рівненська область":
+                            loadMarkers(37);
+                            mRivnenska.setMap(null);
+                            break;
+                        case "Чернівецька область":
+                            loadMarkers(38);
+                            mChernivetska.setMap(null);
+                            break;
+                        case "Дніпропетровська область":
+                            loadMarkers(39);
+                            mDnipropetrovska.setMap(null);
+                            break;
+                        case "Харківська область":
+                            loadMarkers(40);
+                            mKharkivska.setMap(null);
+                            break;
+                        case "Черкаська область":
+                            loadMarkers(41);
+                            mCherkaska.setMap(null);
+                            break;
+                        case "Закарпатська область":
+                            loadMarkers(42);
+                            mZakarpatska.setMap(null);
+                            break;
+                        case "Луганська область":
+                            loadMarkers(43);
+                            mLuhanska.setMap(null);
+                            break;
+                        case "Полтавська область":
+                            loadMarkers(45)
+                            mPoltavska.setMap(null);
+                            break;
+                        case "Хмельницька область":
+                            loadMarkers(46);
+                            mKhmelnytska.setMap(null);
+                            break;
+                        case "Автономна республіка Крим":
+                            loadMarkers(47);
+                            mCrimea.setMap(null);
+                            break;
+                        case "Запорізька область":
+                            loadMarkers(48);
+                            mZaporizka.setMap(null);
+                            break;
+                        case "Івано-Франківська область":
+                            loadMarkers(49);
+                            mIvanoFrankivska.setMap(null);
+                            break;
+                        case "Сумська область":
+                            loadMarkers(50);
+                            mSumska.setMap(null);
+                            break;
+                        case "Чернігівська область":
+                            loadMarkers(51);
+                            mChernihivska.setMap(null);
+                            break;
+                        case "Херсонська область":
+                            loadMarkers(52);
+                            mKhersonska.setMap(null);
+                            break;
+                    }
                 } else {
                     window.alert('Could not find your location');
                 }
-            } else {
+            }else {
                 window.alert('Geocoder failed due to: ' + status);
             }
         });

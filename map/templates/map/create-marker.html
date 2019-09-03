@@ -6,37 +6,27 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body bg-light">
     {% for field in form %}
       <div class="form-group{% if field.errors %} invalid{% endif %}">
         <label for="{{ field.id_for_label }}">
             {{ field.label }}
         </label>
-      {% if field.name == 'longitude' %}
-          <input readonly class="form-control-plaintext" type="text" placeholder={{ field }}
-                 </input>
-      {% endif %}
-      {% if field.name == 'latitude' %}
-          <input readonly class="form-control-plaintext" type="text" placeholder={{ field }}
-          </input>
-      {% endif %}
-      {% if field.name != 'latitude' %} {% if field.name != 'longitude' %}
+      <div class="form-group row ml-1 col-lg-12">
         {{ field }}
-      {% endif %}
-      {% endif %}
+      </div>
         {% for error in field.errors %}
           <p class="help-block">{{ error }}</p>
         {% endfor %}
-      <script>
-             document.getElementById('id_latitude').value = currentPosition.lat;
-             document.getElementById('id_longitude').value = currentPosition.lng;
-      </script>
       </div>
-
     {% endfor %}
   </div>
+<script>
+    $('#id_latitude').prop('readonly', true).val(currentPosition.lat);
+    $('#id_longitude').prop('readonly', true).val(currentPosition.lng);
+</script>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="submit" class="submit-btn btn btn-primary">Create</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    <button type="submit" class="submit-btn btn btn-success">Create</button>
   </div>
 </form>
