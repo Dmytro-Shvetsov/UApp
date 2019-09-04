@@ -11,7 +11,9 @@
 .modal-header, .modal-footer{
   background-color: #D2D1D1;
 }
-
+#id_creator_label, #id_latitude_label, #id_longitude_label, .form-group_id_longitude, .form-group_id_latitude{
+    display: none;
+}
 .modal-body{
   background-color: #FCFBFB;
 }
@@ -45,7 +47,7 @@
 #id_description {
     resize: none;
     width: 430px;
-    height: 100px;
+    height: 150px;
 }
 html, body {
     height: 100%;

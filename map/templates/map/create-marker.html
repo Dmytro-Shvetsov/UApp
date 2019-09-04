@@ -8,8 +8,8 @@
   </div>
   <div class="modal-body bg-light">
     {% for field in form %}
-      <div class="form-group{% if field.errors %} invalid{% endif %}">
-        <label for="{{ field.id_for_label }}">
+      <div class="form-group_{{ field.id_for_label }}{% if field.errors %} invalid{% endif %}">
+        <label for="{{ field.id_for_label }}" id="{{ field.id_for_label }}_label">
             {{ field.label }}
         </label>
       <div class="form-group row ml-1 col-lg-12">
@@ -22,8 +22,9 @@
     {% endfor %}
   </div>
 <script>
-    $('#id_latitude').prop('readonly', true).val(currentPosition.lat);
-    $('#id_longitude').prop('readonly', true).val(currentPosition.lng);
+    $('#id_latitude').prop('hidden', true).val(currentPosition.lat);
+    $('#id_longitude').prop('hidden', true).val(currentPosition.lng);
+    $('#id_creator').prop('hidden', true).val({{ user.id }});
 </script>
   <div class="modal-footer">
     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

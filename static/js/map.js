@@ -18,7 +18,7 @@ function loadMarkers(clusterId) {
         }
     });
 }
-function CenterControl(controlDiv, map) {
+function CreateMarkerControl(controlDiv, map) {
 
     var controlUI = document.createElement('div');
     controlUI.style.backgroundColor = '#fff';
@@ -285,11 +285,11 @@ function initMap() {
         };
         map.setCenter(pos);
     });
-    var centerControlDiv = document.createElement('div');
-    centerControlDiv.className = "create-markerDiv";
-    var centerControl = new CenterControl(centerControlDiv, map);
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.LEFT_TOP].push(centerControlDiv);
+    var createMarkerDiv = document.createElement('div');
+    createMarkerDiv.className = "create-markerDiv";
+    var createMarkerControl = new CreateMarkerControl(createMarkerDiv, map);
+    createMarkerDiv.index = 1;
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(createMarkerDiv);
 }
 function geocodeLatLng(geocoder, map, infowindow) {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -302,6 +302,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
                 if (results[0]) {
                     map.setZoom(11);
                     var userLocationInfo = results[0]['address_components'][3]['long_name'];
+                    console.log(userLocationInfo);
                     switch(userLocationInfo){
                         case "Львівська область":
                             loadMarkers(44);
