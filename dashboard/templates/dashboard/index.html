@@ -2,23 +2,23 @@
 {% load custom_tags %}
 {% load staticfiles %}
 {% block content %}
+    <div class="container my-4">
+        <div class="col-3 float-left pr-4">
 
-    <div class="col-3 float-left pr-4">
-
-        <nav class="menu" aria-label="Personal settings" data-pjax>
+            <nav class="menu" aria-label="Personal settings" data-pjax>
             <span class="list-group-item list-group-item-dark menu-heading">
                 Personal settings
             </span>
-            <ul class="list-group">
-                <li class="list-group-item active"><a href="#">Profile</a></li>
-                <li class="list-group-item"><a href="#">Account</a></li>
-                <li class="list-group-item"><a href="#">Organizaions</a></li>
-                <li class="list-group-item"><a href="#">Activity</a></li>
-                <li class="list-group-item"><a href="#">Security</a></li>
-                <li class="list-group-item"><a href="#">Notifications</a></li>
-            </ul>
-        </nav>
+                <ul class="list-group">
+                    <li class="list-group-item active"><a href="#">Profile</a></li>
+                    <li class="list-group-item"><a href="#">Account</a></li>
+                    <li class="list-group-item"><a href="#">Organizaions</a></li>
+                    <li class="list-group-item"><a href="#">Activity</a></li>
+                    <li class="list-group-item"><a href="#">Security</a></li>
+                    <li class="list-group-item"><a href="#">Notifications</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-9 float-right content"></div>
     </div>
-    <div class="col-9 float-right content"></div>
-
 {% endblock %}

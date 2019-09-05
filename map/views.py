@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from .models import Region
 from .utils import preprocess
 from uapp.settings import BASE_DIR
@@ -34,3 +34,14 @@ class MarkerCreateView(BSModalCreateView):
     success_message = 'Success: Marker was created.'
     success_url = reverse_lazy('Home')
 
+
+def marker_info_view(request):
+    if request.method == 'GET':
+        marker_id = request.GET.get('marker_id')
+        marker_obj = Marker.objects.get(pk=marker_id)
+        context = {
+            'marker': marker_obj
+        }
+        return render(request, 'map/helpers/marker_information.html', context);
+
+    return HttpResponseForbidden('Allowed only via GET')

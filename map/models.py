@@ -1,5 +1,7 @@
 from django.db import models
 from PIL import Image, ExifTags
+from authorization.models import User
+
 
 class Region(models.Model):
     name = models.CharField(max_length=100)
@@ -15,6 +17,7 @@ class Marker(models.Model):
     latitude = models.DecimalField(decimal_places=20, max_digits=25, null=True, blank=True)
     marker_region = models.ForeignKey(Region, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/')
+    # creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
