@@ -324,12 +324,7 @@ function displayMarkerInfo(marker_entity) {
         },
         success: function (response) {
             $('html, body').css("cursor", "auto");
-            // let infoWindow = new google.maps.InfoWindow({
-            //     content: response
-            // });
-            // infoWindow.open(map, marker_entity);
-
-            $.fancybox.open(response)
+            $.fancybox.open(response);
         },
         error: function (error) {
             $('html, body').css("cursor", "auto");

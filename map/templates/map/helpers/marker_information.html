@@ -1,27 +1,5 @@
 {% load staticfiles %}
 <script>
-    {#$(document).ready(function () {#}
-    {#    $("a.fancybox").fancybox({#}
-    {#        'transitionIn': 'elastic',#}
-    {#        'transitionOut': 'elastic',#}
-    {#        'speedIn': 600,#}
-    {#        'speedOut': 200,#}
-    {#        'showNavArrows': true,#}
-    {#        baseClass: "fancybox-custom-layout",#}
-    {#        touch: {#}
-    {#            vertical: false#}
-    {#        },#}
-
-    {#        preventCaptionOverlap: false,#}
-    {#        idleTime: false,#}
-    {#        gutter: 30,#}
-    {#        // What buttons should appear in the toolbar#}
-    {#fullScreen : true,#}
-    {#thumbs     : true,#}
-    {#closeBtn   : true,#}
-    {#    });#}
-    {#;#}
-    {##}
     $("[data-fancybox]").fancybox({
         infobar: false,
         touch: {
@@ -50,35 +28,45 @@
         overflow: hidden;
         border-radius: 8px;
     }
-    .marker-content:hover{
+
+    .marker-content:hover {
         cursor: default;
     }
+
     .header {
 
     }
+
     .header, .footer {
         background-color: #D2D1D1;
     }
+
     .email {
         font-style: italic;
         font-size: 16px;
     }
+
     .email .name {
     }
+
     .body {
         background-color: #FCFBFB;
     }
-
+    .counter {
+        font-size: 20px;
+        margin-left: 3px;
+    }
 </style>
 <div class="marker-content p-0">
     <div class="col-12">
         <div class="row header">
             <div class="col-md-12 py-3 pl-4">
-               <a href="#"><img style="width:40px; height: 40px;" src="https://tinypng.com/images/example-orig.png"/></a>
+                <a href="#"><img style="width:40px; height: 40px;"
+                                 src="https://tinypng.com/images/example-orig.png"/></a>
                 <span class="name ml-2 my-auto" style="vertical-align: middle;">Dmytro Shvetsov </span>
                 <span class="email text-secondary" style="vertical-align: middle;">(shvetsovdi2@gmail.com)</span>
             </div>
-{#            {{ marker.creator.profile.first_name }}#}
+            {#            {{ marker.creator.profile.first_name }}#}
         </div>
         <div class="row body px-3">
             <div class="row">
@@ -136,8 +124,21 @@
 
             </div>
             <div class="col-md-4 py-3 pl-4">
-
+                <div class="like-dislike-block d-flex d-flex justify-content-center align-items-center">
+                    <span class="grid__item">
+                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-up text-dark like fa-xs"></span></button>
+                        <span class="counter">0</span>
+                    </span>
+                    <span class="grid__item ml-4 mr-1">
+                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-down text-dark dislike fa-xs"></span>
+                        </button>
+                        <span class="counter">0</span>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    statusBtnsInit();
+</script>
