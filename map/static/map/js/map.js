@@ -5,10 +5,12 @@ var UKRAINE_BOUNDS = {
     west: 21.963889,
     east: 40.58056,
 };
+var ajaxRequestIsProcessing = false;
 
 function CenterControl(controlDiv, map) {
 
     var controlUI = document.createElement('div');
+    controlUI.className = 'create-marker-ui';
     controlUI.style.backgroundColor = '#fff';
     controlUI.style.border = '2px solid #fff';
     controlUI.style.borderRadius = '3px';
@@ -33,7 +35,8 @@ function CenterControl(controlDiv, map) {
     controlText.innerHTML = 'CREATE MARKER';
     controlUI.appendChild(controlText);
 
-    controlUI.addEventListener('click', function () {
+
+    controlUI.addEventListener('click', function (event) {
         $(".create-markerDiv").modalForm({
             formURL: 'create/'
         });
@@ -291,7 +294,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
                 if (results[0]) {
                     map.setZoom(11);
                     var userLocationInfo = results[0]['address_components'][4]['long_name'];
-                    alert(userLocationInfo)
+                    console.log(userLocationInfo)
                 } else {
                     window.alert('Could not find your location');
                 }
@@ -301,3 +304,35 @@ function geocodeLatLng(geocoder, map, infowindow) {
         });
     });
 }
+
+function displayMarkerInfo(marker_entity) {
+    let markerId = marker_entity.get('id');
+    let dashIndex = markerId.indexOf('-');
+    markerId = markerId.substr(
+        dashIndex + 1, markerId.length - dashIndex
+    );
+    markerId = parseInt(markerId);
+    let data = {
+        'marker_id': markerId
+    };
+    $.ajax({
+        method: 'GET',
+        url: '/map/marker_info/',
+        data: data,
+        dataType: 'html',
+        beforeSend: function () {
+            $('html, body').css("cursor", "wait");
+        },
+        success: function (response) {
+            $('html, body').css("cursor", "auto");
+            $.fancybox.open(response);
+        },
+        error: function (error) {
+            $('html, body').css("cursor", "auto");
+            console.log(error);
+            alert('An error occured while loading page. Try later.');
+        }
+    })
+}
+
+
