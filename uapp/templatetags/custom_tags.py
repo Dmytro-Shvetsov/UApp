@@ -23,3 +23,11 @@ def add_value(input_tag, value):
     return input_tag
 
 
+@register.filter(name='get_like_dislike_color')
+def get_like_dislike_color(value, estimType):
+    if value == -1 and estimType == 'dislike':
+        return 'text-danger'
+    if value == 1 and estimType == 'like':
+        return 'text-primary'
+    return 'text-gray'
+

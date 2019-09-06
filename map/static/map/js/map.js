@@ -5,6 +5,7 @@ var UKRAINE_BOUNDS = {
     west: 21.963889,
     east: 40.58056,
 };
+var ajaxRequestIsProcessing = false;
 
 function CenterControl(controlDiv, map) {
 
@@ -333,4 +334,5 @@ function displayMarkerInfo(marker_entity) {
         }
     })
 }
+
 

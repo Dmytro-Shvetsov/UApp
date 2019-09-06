@@ -4,12 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from authorization.forms import ChangePasswordForm
 from authorization import functions as f
-from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
-from django.shortcuts import redirect
+from django.http import JsonResponse
 from django.contrib.auth import authenticate
 from authorization.forms import UpdateUserProfileForm
 from authorization.functions import dict_alert_msg
 import os
+
 
 @login_required
 def security_view(request):

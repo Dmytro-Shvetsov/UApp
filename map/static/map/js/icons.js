@@ -8,19 +8,20 @@
  * Copyright 2016, Codrops
  * http://www.codrops.com
  */
+var ajaxRequestIsProcessing = false;
 
 function isIOSSafari() {
     var userAgent;
     userAgent = window.navigator.userAgent;
     return userAgent.match(/iPad/i) || userAgent.match(/iPhone/i);
-};
+}
 
 // taken from mo.js demos
 function isTouch() {
     var isIETouch;
     isIETouch = navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
     return [].indexOf.call(window, 'ontouchstart') >= 0 || isIETouch;
-};
+}
 
 // taken from mo.js demos
 var isIOS = isIOSSafari(),
@@ -39,7 +40,6 @@ function Animocon(el, options) {
     this.el = el;
     this.options = extend({}, this.options);
     extend(this.options, options);
-
     this.checked = false;
 
     this.timeline = new mojs.Timeline();
@@ -60,26 +60,62 @@ function Animocon(el, options) {
     });
 }
 
+
 Animocon.prototype.options = {
     tweens: [
         new mojs.Burst({})
     ],
     onCheck: function () {
-        return false;
+        return false
     },
     onUnCheck: function () {
-        return false;
+        return false
     }
 };
 
+function estimateMarker(markerId, vote) {
+    ajaxRequestIsProcessing = true;
+    var voteId = null;
+    if (vote.toUpperCase() === 'LIKE') {
+        voteId = 1;
+    } else if (vote.toUpperCase() === 'DISLIKE') {
+        voteId = -1;
+    } else {
+        voteId = 0;
+    }
+    var data = {
+        'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val(),
+        'marker_id': markerId,
+        'vote': voteId
+    };
+    $.ajax({
+        method: 'POST',
+        url: '/map/estimate_marker/',
+        data: data,
+        dataType: 'json',
+        success: function (response) {
+            if (response.user_is_logged === 'no') {
+                window.location.replace('/auth/login/')
+            } else {
+                $('.like-counter').html(response.like_count);
+                $('.dislike-counter').html(response.dislike_count);
+            }
+        },
+        error: function (error) {
+            console.log(error)
+        }
+    });
+    ajaxRequestIsProcessing = false;
+}
+
 // icons:
 
-function statusBtnsInit() {
+function statusBtnsInit(markerId, checkedBtn = '') {
     var items = [].slice.call(document.querySelectorAll('div.like-dislike-block > .grid__item'));
 
     /* Dislike Icon  */
     var el1 = items[1].querySelector('button.icobutton'), el1span = el1.querySelector('span');
-    new Animocon(el1, {
+    var dislike = new Animocon(el1, {
         tweens: [
             // burst animation
             new mojs.Burst({
@@ -120,18 +156,24 @@ function statusBtnsInit() {
             })
         ],
         onCheck: function () {
-            $('.dislike').removeClass('text-dark').addClass('text-danger')
+            if (ajaxRequestIsProcessing === false) {
+                $('.dislike').removeClass('text-dark').addClass('text-danger');
+                $('.like').removeClass('text-primary');
+                estimateMarker(markerId, 'dislike')
+            }
         },
         onUnCheck: function () {
-            $('.dislike').removeClass('text-danger').addClass('text-dark')
-
+            if (ajaxRequestIsProcessing === false) {
+                $('.dislike').removeClass('text-danger').addClass('text-dark');
+                estimateMarker(markerId, '')
+            }
         }
     });
     /* Dislike Icon */
 
     /* Like Icon */
     var el2 = items[0].querySelector('button.icobutton'), el2span = el2.querySelector('span');
-    new Animocon(el2, {
+    var like = new Animocon(el2, {
         tweens: [
             // burst animation
             new mojs.Burst({
@@ -175,11 +217,23 @@ function statusBtnsInit() {
             })
         ],
         onCheck: function () {
-            $('.like').removeClass('text-dark').addClass('text-primary')
+            if (ajaxRequestIsProcessing === false) {
+                $('.like').removeClass('text-dark').addClass('text-primary');
+                $('.dislike').removeClass('text-danger');
+                estimateMarker(markerId, 'like')
+            }
         },
         onUnCheck: function () {
-            $('.like').removeClass('text-primary').addClass('text-dark')
+            if (ajaxRequestIsProcessing === false) {
+                $('.like').removeClass('text-primary').addClass('text-dark');
+                estimateMarker(markerId, '')
+            }
         }
     });
     /* Like Icon */
+    if (checkedBtn.toUpperCase() === 'LIKE') {
+        like.checked = true;
+    } else if (checkedBtn.toUpperCase() === 'DISLIKE') {
+        dislike.checked = true;
+    }
 }

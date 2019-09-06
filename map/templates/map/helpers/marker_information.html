@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load custom_tags %}
 <script>
     $("[data-fancybox]").fancybox({
         infobar: false,
@@ -124,15 +125,16 @@
 
             </div>
             <div class="col-md-4 py-3 pl-4">
+                {% csrf_token %}
                 <div class="like-dislike-block d-flex d-flex justify-content-center align-items-center">
                     <span class="grid__item">
-                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-up text-dark like fa-xs"></span></button>
-                        <span class="counter">0</span>
+                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-up {{ estimator.vote|get_like_dislike_color:'like' }} like fa-xs"></span></button>
+                        <span class="counter like-counter">{{ marker.get_likes_count }}</span>
                     </span>
                     <span class="grid__item ml-4 mr-1">
-                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-down text-dark dislike fa-xs"></span>
+                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-down {{ estimator.vote|get_like_dislike_color:'dislike' }} dislike fa-xs"></span>
                         </button>
-                        <span class="counter">0</span>
+                        <span class="counter dislike-counter">{{ marker.get_dislikes_count }}</span>
                     </span>
                 </div>
             </div>
@@ -140,5 +142,5 @@
     </div>
 </div>
 <script>
-    statusBtnsInit();
+    statusBtnsInit({{ marker.id }});
 </script>
