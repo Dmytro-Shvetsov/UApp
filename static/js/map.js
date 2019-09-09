@@ -33,7 +33,6 @@ function CreateMarkerControl(controlDiv, map) {
     controlUI.title = 'Click to create a marker';
     controlDiv.appendChild(controlUI);
 
-    // Set CSS for the control interior.
     var controlText = document.createElement('div');
     controlText.style.color = 'rgb(25,25,25)';
     controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
@@ -301,9 +300,14 @@ function geocodeLatLng(geocoder, map, infowindow) {
             if (status === 'OK') {
                 if (results[0]) {
                     map.setZoom(11);
-                    var userLocationInfo = results[0]['address_components'][3]['long_name'];
-                    console.log(userLocationInfo);
-                    switch(userLocationInfo){
+                    for (var i = 0; i < results.length; i++) {
+						if (results[i].types[0] === "locality") {
+							var region = results[i].address_components[2].short_name;
+							$("input[name='location']").val(region);
+
+						}
+                    }
+                    switch(region){
                         case "Львівська область":
                             loadMarkers(44);
                             mLvivska.setMap(null);
