@@ -1,3 +1,9 @@
+header, footer{
+    background-color: #dedad9;
+}
+.copyright{
+    text-align: center;
+}
 .mynavbar li{
     font-size: 20px;
     margin-right: 10px !important;

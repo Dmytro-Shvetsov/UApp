@@ -53,19 +53,38 @@
     .body {
         background-color: #FCFBFB;
     }
+
     .counter {
         font-size: 20px;
         margin-left: 3px;
+    }
+
+    .share {
+        height: 100%;
+    }
+
+    .timestamp-content {
+        font-size: 14px;
+        color: ;
     }
 </style>
 <div class="marker-content p-0">
     <div class="col-12">
         <div class="row header">
-            <div class="col-md-12 py-3 pl-4">
+            <div class="col-md-12 py-3 pl-4 d-flex align-items-center">
                 <a href="#"><img style="width:40px; height: 40px;"
                                  src="https://tinypng.com/images/example-orig.png"/></a>
-                <span class="name ml-2 my-auto" style="vertical-align: middle;">Dmytro Shvetsov </span>
-                <span class="email text-secondary" style="vertical-align: middle;">(shvetsovdi2@gmail.com)</span>
+                <span class="name ml-2 my-auto">
+                    {{ marker.creator.profile.first_name }} {{ marker.creator.profile.last_name }}
+                    <br/>
+                    <span class="timestamp-content text-secondary">11 вересня о 05:47</span>
+                </span>
+                {% if marker.creator.profile.user_email_is_public %}
+                    <span class="email text-secondary ml-1">(shvetsovdi2@gmail.com)</span>
+                {% endif %}
+                <br/>
+                <span class="share ml-auto my-auto d-flex align-items-center mr-2"><i class="fas mr-1 fa-flag"></i> Повідомити</span>
+                <span class="share my-auto d-flex align-items-center mr-4"><i class="fas mr-1 fa-plus"></i> Стежити</span>
             </div>
             {#            {{ marker.creator.profile.first_name }}#}
         </div>
@@ -121,18 +140,33 @@
             </div>
         </div>
         <div class="row footer">
-            <div class="col-md-8 py-3 pl-4">
-
+            <div class="col-md-6 py-2 pl-4">
+                <div class="align-items-center px-3">
+                    <span class="icobutton">
+                        <i class="fab fa-xs fa-facebook-square"></i>
+                    </span>
+                    <span class="icobutton">
+                        <i class="fab fa-xs fa-instagram"></i>
+                    </span>
+                    <span class="icobutton">
+                        <i class="fab fa-xs fa-xs fa-telegram"></i>
+                    </span>
+                    <span class="icobutton">
+                        <i class="fab fa-xs fa-twitter"></i>
+                    </span>
+                </div>
             </div>
-            <div class="col-md-4 py-3 pl-4">
-                {% csrf_token %}
-                <div class="like-dislike-block d-flex d-flex justify-content-center align-items-center">
+            <div class="col-md-6 py-3 pl-4">
+                <div style="height: 100%;" class="like-dislike-block d-flex justify-content-end align-items-center">
+                    {% csrf_token %}
                     <span class="grid__item">
-                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-up {{ estimator.vote|get_like_dislike_color:'like' }} like fa-xs"></span></button>
+                        <button class="icobutton icobutton--thumbs-up"><span
+                                class="fa fa-thumbs-up {{ estimator.vote|get_like_dislike_color:'like' }} like fa-xs"></span></button>
                         <span class="counter like-counter">{{ marker.get_likes_count }}</span>
                     </span>
-                    <span class="grid__item ml-4 mr-1">
-                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-down {{ estimator.vote|get_like_dislike_color:'dislike' }} dislike fa-xs"></span>
+                    <span class="grid__item ml-4 mr-4">
+                        <button class="icobutton icobutton--thumbs-up"><span
+                                class="fa fa-thumbs-down {{ estimator.vote|get_like_dislike_color:'dislike' }} dislike fa-xs"></span>
                         </button>
                         <span class="counter dislike-counter">{{ marker.get_dislikes_count }}</span>
                     </span>
