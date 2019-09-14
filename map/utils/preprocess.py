@@ -12,15 +12,17 @@ def preprocess_coords(file_path):
 
         p = re.compile('<name>([A-Za-z]+)</name>', re.IGNORECASE)
         regs_names = p.findall(content)
-        p = re.compile(r'<coordinates>(\s*([0-9]+.[0-9]+.*[0-9]+.[0-9]+\s*)+)</coordinates>', re.IGNORECASE)
+        # p = re.compile(r'<coordinates>(\s*([0-9]+.[0-9]+.*[0-9]+.[0-9]+\s*)+)</coordinates>', re.IGNORECASE)
+        p = re.compile(r'<coordinates>(.*)</coordinates>', re.IGNORECASE)
+
         coords = p.findall(content)
 
-        regs_info = {regs_names[i]: {'coords': coords[i][0], 'hex_color': ''} for i in range(len(regs_names))}
+        regs_info = {regs_names[i]: {'coords': coords[i], 'hex_color': ''} for i in range(len(regs_names))}
         all_regions_marker_counts = {region_name: 0 for region_name in regs_names}
         for region_name in regs_info:
             # cleaning each region's coordinates
             all_coords = regs_info[region_name]['coords'].strip()
-            split_coords = [k.split(',') for k in all_coords.split('\n')]
+            split_coords = [k.split(',') for k in all_coords.split(' ')]
             for i in range(len(split_coords)):
                 split_coords[i].pop()
                 formatted_coords = {'lng': float(split_coords[i][0].strip()), 'lat': float(split_coords[i][1].strip())}

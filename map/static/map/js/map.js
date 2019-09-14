@@ -293,14 +293,20 @@ function geocodeLatLng(geocoder, map, infowindow) {
             if (status === 'OK') {
                 if (results[0]) {
                     map.setZoom(11);
-                    var userLocationInfo = results[0]['address_components'][4]['long_name'];
-                    console.log(userLocationInfo)
+                    for (var i = 0; i < results.length; i++) {
+                        if (results[i].types[0] === "locality") {
+                            var region = results[i].address_components[2].short_name;
+                            $("input[name='location']").val(region);
+                        }
+                    }
+                    console.log(region)
                 } else {
                     window.alert('Could not find your location');
                 }
             } else {
                 window.alert('Geocoder failed due to: ' + status);
             }
+
         });
     });
 }
