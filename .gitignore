@@ -3,7 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=django
 
 .idea/
-settings.py
+#settings.py
 
 ### Django ###
 *.log

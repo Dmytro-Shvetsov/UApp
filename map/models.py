@@ -1,6 +1,7 @@
 from django.db import models
-from PIL import Image
 from authorization.models import User
+from PIL import Image, ExifTags
+
 
 class Region(models.Model):
     name = models.CharField(max_length=100)
@@ -20,6 +21,11 @@ class Marker(models.Model):
     image = models.ImageField(upload_to='images/')
     creator = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
+    def get_likes_count(self):
+        return len(self.markerestimator_set.all().filter(vote=1))
+
+    def get_dislikes_count(self):
+        return len(self.markerestimator_set.all().filter(vote=-1))
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -41,3 +47,12 @@ class Marker(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class MarkerEstimator(models.Model):
+    LIKE = 1
+    DISLIKE = -1
+
+    vote = models.SmallIntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    marker = models.ForeignKey(Marker, on_delete=models.CASCADE)

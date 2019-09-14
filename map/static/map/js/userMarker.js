@@ -1,5 +1,5 @@
 var image = {
-    url: "static/images/UserMarker.png",
+    url: '/media/imageIcons/UserMarker.png',
     scaledSize: new google.maps.Size(105, 105)
 };
 if(navigator.geolocation){

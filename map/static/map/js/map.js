@@ -19,8 +19,9 @@ function loadMarkers(clusterId) {
     });
 }
 function CreateMarkerControl(controlDiv, map) {
-
+    var ajaxRequestIsProcessing = false;
     var controlUI = document.createElement('div');
+    controlUI.className = 'create-marker-ui';
     controlUI.style.backgroundColor = '#fff';
     controlUI.style.border = '2px solid #fff';
     controlUI.style.borderRadius = '3px';
@@ -44,7 +45,7 @@ function CreateMarkerControl(controlDiv, map) {
     controlText.innerHTML = 'CREATE MARKER';
     controlUI.appendChild(controlText);
 
-    controlUI.addEventListener('click', function () {
+    controlUI.addEventListener('click', function (event) {
         $(".create-markerDiv").modalForm({
             formURL: 'create/'
         });
@@ -418,3 +419,35 @@ function geocodeLatLng(geocoder, map, infowindow) {
         });
     });
 }
+
+function displayMarkerInfo(marker_entity) {
+    let markerId = marker_entity.get('id');
+    let dashIndex = markerId.indexOf('-');
+    markerId = markerId.substr(
+        dashIndex + 1, markerId.length - dashIndex
+    );
+    markerId = parseInt(markerId);
+    let data = {
+        'marker_id': markerId
+    };
+    $.ajax({
+        method: 'GET',
+        url: '/map/marker_info/',
+        data: data,
+        dataType: 'html',
+        beforeSend: function () {
+            $('html, body').css("cursor", "wait");
+        },
+        success: function (response) {
+            $('html, body').css("cursor", "auto");
+            $.fancybox.open(response);
+        },
+        error: function (error) {
+            $('html, body').css("cursor", "auto");
+            console.log(error);
+            alert('An error occured while loading page. Try later.');
+        }
+    })
+}
+
+

@@ -4,7 +4,7 @@
 <html lang="uk">
 <head>
     <title>Simple Map</title>
-    <link rel="stylesheet" href="{% static 'css/map.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'map/css/map.css' %}" type="text/css"/>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
     <meta name="viewport" content="initial-scale=1.0, width=device-width">
     <meta charset="utf-8">
@@ -22,33 +22,35 @@
     <script src="https://kit.fontawesome.com/36d449083d.js"></script>
 </head>
 <body>
-<header class="container">
-    <nav class="navbar-expand-lg navbar-nav sticky-top navbar-light bg-light">
-        <div class="col-10 py-2 ml-3">
-            <ul class="navbar-nav mx-0 px-3 mynavbar">
-                <li>
-                    <a class="logo navbar-brand" href="{% url 'Home' %}">
-                        <img src="#"/>
-                    </a>
-                </li>
-                <li><a class="nav-link" href="#">About</a></li>
-                <li><a class="nav-link" href="#">How it works</a></li>
-                <li><a class="nav-link" href="{% url 'map' %}">Map</a></li>
-                <li><a class="nav-link" href="#">Supporters</a></li>
-            </ul>
-        </div>
-        <div class="col-2 d-flex justify-content-center align-items-center">
-            {% if request.user.is_authenticated %}
-                <a class="fa-container" href="{% url 'dashboard'%}"><i class="fa fa-user fa-lg mr-3"></i></a>
-                <a class="fa-container" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt fa-lg pr-3"></i></a>
-            {% else %}
-                <a class="log-in btn btn-secondary mx-1 text-light" href="{% url 'login' %}">Log in</a>
-                <a class="sign-up btn btn-dark text-light" href="{% url 'register' %}">Sign up</a>
-            {% endif %}
-        </div>
-    </nav>
-</header>
-<main class="page-content container my-4">
+{% block header %}
+    <header class="container">
+        <nav class="navbar-expand-lg navbar-nav sticky-top navbar-light bg-light">
+            <div class="col-10 py-2 ml-3">
+                <ul class="navbar-nav mx-0 px-3 mynavbar">
+                    <li>
+                        <a class="logo navbar-brand" href="{% url 'Home' %}">
+                            <img src="#"/>
+                        </a>
+                    </li>
+                    <li><a class="nav-link" href="#">About</a></li>
+                    <li><a class="nav-link" href="#">How it works</a></li>
+                    <li><a class="nav-link" href="{% url 'map' %}">Map</a></li>
+                    <li><a class="nav-link" href="#">Supporters</a></li>
+                </ul>
+            </div>
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                {% if request.user.is_authenticated %}
+                    <a class="fa-container" href="{% url 'dashboard' %}"><i class="fa fa-user fa-lg mr-3"></i></a>
+                    <a class="fa-container" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt fa-lg pr-3"></i></a>
+                {% else %}
+                    <a class="log-in btn btn-secondary mx-1 text-light" href="{% url 'login' %}">Log in</a>
+                    <a class="sign-up btn btn-dark text-light" href="{% url 'register' %}">Sign up</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+{% endblock %}
+<main class="container-fluid">
     {% block content %}
 
     {% endblock %}

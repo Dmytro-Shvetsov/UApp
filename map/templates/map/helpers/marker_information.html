@@ -1,0 +1,146 @@
+{% load staticfiles %}
+{% load custom_tags %}
+<script>
+    $("[data-fancybox]").fancybox({
+        infobar: false,
+        touch: {
+            vertical: false
+        },
+        buttons: ["close", "thumbs", "share"],
+        animationEffect: "fade",
+        transitionEffect: "fade",
+        preventCaptionOverlap: false,
+        idleTime: false,
+    });
+    $(function () {
+        $('.last-image, .load-more').mouseover(function () {
+            $('.last-image').parent().css('opacity', 0.35);
+        }).mouseleave(function () {
+            $('.last-image').parent().css('opacity', 0.6);
+        });
+    });
+</script>
+<style>
+    .marker-content {
+        position: relative;
+        font-size: 18px;
+        font-family: arial;
+        width: 80vh;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+    .marker-content:hover {
+        cursor: default;
+    }
+
+    .header {
+
+    }
+
+    .header, .footer {
+        background-color: #D2D1D1;
+    }
+
+    .email {
+        font-style: italic;
+        font-size: 16px;
+    }
+
+    .email .name {
+    }
+
+    .body {
+        background-color: #FCFBFB;
+    }
+    .counter {
+        font-size: 20px;
+        margin-left: 3px;
+    }
+</style>
+<div class="marker-content p-0">
+    <div class="col-12">
+        <div class="row header">
+            <div class="col-md-12 py-3 pl-4">
+                <a href="#"><img style="width:40px; height: 40px;"
+                                 src="https://tinypng.com/images/example-orig.png"/></a>
+                <span class="name ml-2 my-auto" style="vertical-align: middle;">Dmytro Shvetsov </span>
+                <span class="email text-secondary" style="vertical-align: middle;">(shvetsovdi2@gmail.com)</span>
+            </div>
+            {#            {{ marker.creator.profile.first_name }}#}
+        </div>
+        <div class="row body px-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="images mt-2" style="text-align: center;">
+                        <div style="display: inline-block;">
+                            <a class="fancybox" data-fancybox="marker-images"
+                               href="http://farm2.staticflickr.com/1669/23976340262_a5ca3859f6_b.jpg"
+                               title="Twilight Memories (doraartem)">
+                                <img src="http://farm2.staticflickr.com/1669/23976340262_a5ca3859f6_m.jpg" alt=""/>
+                            </a>
+                            <a class="fancybox" data-fancybox="marker-images"
+                               href="http://farm2.staticflickr.com/1459/23610702803_83655c7c56_b.jpg"
+                               title="Electrical Power Lines and Pylons disappear over t.. (pautliubomir)">
+                                <img src="http://farm2.staticflickr.com/1459/23610702803_83655c7c56_m.jpg" alt=""/>
+                            </a>
+                            <a class="fancybox" data-fancybox="marker-images"
+                               href="http://farm2.staticflickr.com/1617/24108587812_6c9825d0da_b.jpg"
+                               title="Morning Godafoss (Brads5)">
+                                <img src="http://farm2.staticflickr.com/1617/24108587812_6c9825d0da_m.jpg" alt=""/>
+                            </a>
+                            <a class="fancybox" data-fancybox="marker-images"
+                               style="position:relative; text-align: center; color: white; opacity: 0.5;"
+                               href="http://farm4.staticflickr.com/3691/10185053775_701272da37_b.jpg"
+                               title="Vertical - Special Edition! (cedarsphoto)">
+                                <img class="last-image"
+                                     src="http://farm4.staticflickr.com/3691/10185053775_701272da37_m.jpg"
+                                     alt=""/>
+                                <div class="load-more">+12</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row card-body mx-2">
+                    <h3 class="card-title">{{ marker.name }}</h3>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        incididunt
+                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris
+                        nisi ut
+                        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum
+                        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                        qui
+                        officia
+                        deserunt mollit anim id est laborum.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+        </div>
+        <div class="row footer">
+            <div class="col-md-8 py-3 pl-4">
+
+            </div>
+            <div class="col-md-4 py-3 pl-4">
+                {% csrf_token %}
+                <div class="like-dislike-block d-flex d-flex justify-content-center align-items-center">
+                    <span class="grid__item">
+                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-up {{ estimator.vote|get_like_dislike_color:'like' }} like fa-xs"></span></button>
+                        <span class="counter like-counter">{{ marker.get_likes_count }}</span>
+                    </span>
+                    <span class="grid__item ml-4 mr-1">
+                        <button class="icobutton icobutton--thumbs-up"><span class="fa fa-thumbs-down {{ estimator.vote|get_like_dislike_color:'dislike' }} dislike fa-xs"></span>
+                        </button>
+                        <span class="counter dislike-counter">{{ marker.get_dislikes_count }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    statusBtnsInit({{ marker.id }});
+</script>
