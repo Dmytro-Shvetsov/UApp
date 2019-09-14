@@ -416,6 +416,7 @@ function geocodeLatLng(geocoder, map, infowindow) {
             }else {
                 window.alert('Geocoder failed due to: ' + status);
             }
+
         });
     });
 }

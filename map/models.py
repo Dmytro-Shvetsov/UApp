@@ -19,8 +19,7 @@ class Marker(models.Model):
     latitude = models.DecimalField(decimal_places=20, max_digits=25, null=True, blank=True)
     marker_region = models.ForeignKey(Region, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/')
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
-
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
     def get_likes_count(self):
         return len(self.markerestimator_set.all().filter(vote=1))
 
