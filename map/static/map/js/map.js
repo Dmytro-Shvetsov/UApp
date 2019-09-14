@@ -1,14 +1,25 @@
 var map;
+var currentPosition;
 var UKRAINE_BOUNDS = {
     north: 52.734444,
     south: 43.391111,
     west: 21.963889,
     east: 40.58056,
 };
-var ajaxRequestIsProcessing = false;
-
-function CenterControl(controlDiv, map) {
-
+function loadMarkers(clusterId) {
+    $.ajax({
+        type: "GET",
+        url: '/map/',
+        data: {
+            'regionId': clusterId
+        },
+        success:function(response) {
+            $("body").append(response);
+        }
+    });
+}
+function CreateMarkerControl(controlDiv, map) {
+    var ajaxRequestIsProcessing = false;
     var controlUI = document.createElement('div');
     controlUI.className = 'create-marker-ui';
     controlUI.style.backgroundColor = '#fff';
@@ -23,7 +34,6 @@ function CenterControl(controlDiv, map) {
     controlUI.title = 'Click to create a marker';
     controlDiv.appendChild(controlUI);
 
-    // Set CSS for the control interior.
     var controlText = document.createElement('div');
     controlText.style.color = 'rgb(25,25,25)';
     controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
@@ -34,7 +44,6 @@ function CenterControl(controlDiv, map) {
     controlText.style.fontWeight = '30px';
     controlText.innerHTML = 'CREATE MARKER';
     controlUI.appendChild(controlText);
-
 
     controlUI.addEventListener('click', function (event) {
         $(".create-markerDiv").modalForm({
@@ -276,34 +285,135 @@ function initMap() {
         };
         map.setCenter(pos);
     });
-    var centerControlDiv = document.createElement('div');
-    centerControlDiv.className = "create-markerDiv";
-    var centerControl = new CenterControl(centerControlDiv, map);
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.LEFT_TOP].push(centerControlDiv);
+    var createMarkerDiv = document.createElement('div');
+    createMarkerDiv.className = "create-markerDiv";
+    var createMarkerControl = new CreateMarkerControl(createMarkerDiv, map);
+    createMarkerDiv.index = 1;
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(createMarkerDiv);
 }
-
 function geocodeLatLng(geocoder, map, infowindow) {
     navigator.geolocation.getCurrentPosition(function (position) {
-        var pos = {
+        currentPosition = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
         };
-        geocoder.geocode({'location': pos}, function (results, status) {
+        geocoder.geocode({'location': currentPosition}, function (results, status) {
             if (status === 'OK') {
                 if (results[0]) {
                     map.setZoom(11);
                     for (var i = 0; i < results.length; i++) {
-                        if (results[i].types[0] === "locality") {
-                            var region = results[i].address_components[2].short_name;
-                            $("input[name='location']").val(region);
-                        }
+						if (results[i].types[0] === "locality") {
+							var region = results[i].address_components[2].short_name;
+							$("input[name='location']").val(region);
+
+						}
                     }
-                    console.log(region)
+                    switch(region){
+                        case "Львівська область":
+                            loadMarkers(44);
+                            mLvivska.setMap(null);
+                            break;
+                        case "Миколаївська область":
+                            loadMarkers(28);
+                            mMykolayivska.setMap(null);
+                            break;
+                        case "Тернопільська область":
+                            loadMarkers(29);
+                            mTernopilska.setMap(null);
+                            break;
+                        case "Житомирська область":
+                            loadMarkers(30);
+                            mZhytomyrska.setMap(null);
+                            break;
+                        case "Кіровоградська область":
+                            loadMarkers(31);
+                            mKirovohradska.setMap(null);
+                            break;
+                        case "Одеська область":
+                            loadMarkers(32);
+                            mOdeska.setMap(null);
+                            break;
+                        case "Волинська область":
+                            loadMarkers(33);
+                            mVolynska.setMap(null);
+                            break;
+                        case "Київська область":
+                            loadMarkers(34);
+                            mKyivska.setMap(null);
+                            break;
+                        case "Вінницька область":
+                            loadMarkers(35);
+                            mVinnytska.setMap(null);
+                            break;
+                        case "Донецька область":
+                            loadMarkers(36);
+                             mDonetska.setMap(null);
+                             break;
+                        case "Рівненська область":
+                            loadMarkers(37);
+                            mRivnenska.setMap(null);
+                            break;
+                        case "Чернівецька область":
+                            loadMarkers(38);
+                            mChernivetska.setMap(null);
+                            break;
+                        case "Дніпропетровська область":
+                            loadMarkers(39);
+                            mDnipropetrovska.setMap(null);
+                            break;
+                        case "Харківська область":
+                            loadMarkers(40);
+                            mKharkivska.setMap(null);
+                            break;
+                        case "Черкаська область":
+                            loadMarkers(41);
+                            mCherkaska.setMap(null);
+                            break;
+                        case "Закарпатська область":
+                            loadMarkers(42);
+                            mZakarpatska.setMap(null);
+                            break;
+                        case "Луганська область":
+                            loadMarkers(43);
+                            mLuhanska.setMap(null);
+                            break;
+                        case "Полтавська область":
+                            loadMarkers(45)
+                            mPoltavska.setMap(null);
+                            break;
+                        case "Хмельницька область":
+                            loadMarkers(46);
+                            mKhmelnytska.setMap(null);
+                            break;
+                        case "Автономна республіка Крим":
+                            loadMarkers(47);
+                            mCrimea.setMap(null);
+                            break;
+                        case "Запорізька область":
+                            loadMarkers(48);
+                            mZaporizka.setMap(null);
+                            break;
+                        case "Івано-Франківська область":
+                            loadMarkers(49);
+                            mIvanoFrankivska.setMap(null);
+                            break;
+                        case "Сумська область":
+                            loadMarkers(50);
+                            mSumska.setMap(null);
+                            break;
+                        case "Чернігівська область":
+                            loadMarkers(51);
+                            mChernihivska.setMap(null);
+                            break;
+                        case "Херсонська область":
+                            loadMarkers(52);
+                            mKhersonska.setMap(null);
+                            break;
+                    }
                 } else {
                     window.alert('Could not find your location');
                 }
-            } else {
+            }else {
                 window.alert('Geocoder failed due to: ' + status);
             }
 

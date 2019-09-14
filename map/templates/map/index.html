@@ -13,10 +13,10 @@
     </div>
 {% endblock %}
 {% block additional_static_files %}
+    {% load static %}
     <link rel="stylesheet" href="{% static 'map/css/map.css' %}" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/style.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/icons.css' %}"/>
-
     <script src="{% static 'map/js/map.js' %}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB8zr2YDVYWGhgYZsEfkPDZnwOL_UF21A&callback=initMap&language=uk"></script>
     <script src="https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDevOz4ccaGWa0v8-0ALkxADKIHca2cLnA"></script>
@@ -35,29 +35,28 @@
             {{ region_name|lower }}Polygon.setMap(map);
         {% endfor %}
     </script>
-    <script defer>
-        var icon = {
-            url: 'https://i.dlpng.com/static/png/1780489_preview.png',
-            scaledSize: new google.maps.Size(50, 50)
-        };
-        {% for marker in markers %}
-            let m{{ marker.id }} = new google.maps.Marker({
-                position: {lat: {{ marker.latitude }}, lng: {{ marker.longitude }}},
-                icon: icon,
-                map: map,
-                title: "{{ marker.name }}",
-                animation: google.maps.Animation.BOUNCE,
-                draggable: false
-            });
-            m{{ marker.id }}.set(map);
-            m{{ marker.id }}.set('id', 'marker-{{ marker.id }}');
-            m{{ marker.id }}.addListener('click',
-                function () {
-                    displayMarkerInfo(m{{ marker.id }})
-                }
-            );
-        {% endfor %}
-    </script>
+    <script>
+   var clusterIcon = {
+        url: '/media/imageIcons/clusterIcon.png',
+        size: new google.maps.Size(80, 40),
+        scaledSize: new google.maps.Size(60, 30),
+    };
+        {% for cluster in clusters %}
+          let m{{ cluster.name }} = new google.maps.Marker({
+            position: {lat: {{ cluster.latitude }} ,lng: {{ cluster.longitude }} },
+             icon: clusterIcon,
+              opacity: 0.5,
+             map: map,
+              title: "{{ cluster.name }} oblast",
+	        draggable: false
+          });
+             m{{ cluster.name }}.set(map);
+             m{{ cluster.name }}.addListener('click', function() {
+                 loadMarkers({{cluster.id}});
+                 m{{cluster.name}}.setMap(null);
+                 });
+      {% endfor %}
+</script>
     <script src="{% static 'map/js/mo.min.js' %}"></script>
     <script src="{% static 'map/js/icons.js' %}"></script>
 {% endblock %}

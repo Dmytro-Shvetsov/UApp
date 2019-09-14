@@ -1,10 +1,12 @@
 from django.db import models
-from PIL import Image, ExifTags
 from authorization.models import User
+from PIL import Image, ExifTags
 
 
 class Region(models.Model):
     name = models.CharField(max_length=100)
+    longitude = models.DecimalField(decimal_places=20, max_digits=25, null=True, blank=True)
+    latitude = models.DecimalField(decimal_places=20, max_digits=25, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -12,13 +14,12 @@ class Region(models.Model):
 
 class Marker(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField(max_length=1000, null=False, blank=False, default='No description given')
+    description = models.TextField(max_length=1000, null=False, blank=False)
     longitude = models.DecimalField(decimal_places=20, max_digits=25, null=True, blank=True)
     latitude = models.DecimalField(decimal_places=20, max_digits=25, null=True, blank=True)
     marker_region = models.ForeignKey(Region, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/')
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
-
     def get_likes_count(self):
         return len(self.markerestimator_set.all().filter(vote=1))
 
