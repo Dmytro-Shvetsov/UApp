@@ -41,7 +41,7 @@ def marker_info_view(request):
     if request.method == 'GET':
         marker_id = request.GET.get('marker_id')
         marker_obj = Marker.objects.get(pk=marker_id)
-        estimator = MarkerEstimator.objects.get_or_create(user=request.user, marker=marker_obj)[0]
+        estimator = MarkerEstimator.objects.get_or_create(user=marker_obj.creator, marker=marker_obj)[0]
         context = {
             'marker': marker_obj,
             'estimator': estimator
@@ -72,3 +72,5 @@ def estimate_marker_view(request):
             'like_count': marker.get_likes_count(),
             'dislike_count': marker.get_dislikes_count()
         })
+
+
