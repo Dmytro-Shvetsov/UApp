@@ -1,6 +1,6 @@
 var image = {
-    url: "https://png.pngtree.com/svg/20170602/b7c3ca6e9e.svg",
-    scaledSize: new google.maps.Size(30, 30)
+    url: '/media/imageIcons/UserMarker.png',
+    scaledSize: new google.maps.Size(105, 105)
 };
 if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(position =>{

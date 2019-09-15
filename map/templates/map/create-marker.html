@@ -1,52 +1,33 @@
 <form method="POST" enctype="multipart/form-data" action="{% url 'Home' %}" id="submitMarkerForm">
     {% csrf_token %}
-    <div class="modal-header">
-        <h5 class="modal-title">Create new Marker</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        {% for field in form %}
-            <div class="form-group{% if field.errors %} invalid{% endif %}">
-                <label for="{{ field.id_for_label }}">
-                    {{ field.label }}
-                </label>
-                {% if field.name == 'longitude' %}
-                    <script>
-                        var temp;
-                        navigator.geolocation.getCurrentPosition(position => {
-                            temp = position.coords.longitude;
-                            document.getElementById('id_longitude').value = temp;
-                        });
-                    </script>
-                    <input readonly class="form-control-plaintext" type="text" placeholder={{ field }}
-                            </input>
-                {% endif %}
-                {% if field.name == 'latitude' %}
-                    <script>
-                        var temp;
-                        navigator.geolocation.getCurrentPosition(position => {
-                            temp = position.coords.latitude;
-                            document.getElementById('id_latitude').value = temp;
-                        });
-                    </script>
-                    <input readonly class="form-control-plaintext" type="text" placeholder={{ field }}
-                            </input>
-                {% endif %}
-                {% if field.name != 'latitude' %} {% if field.name != 'longitude' %}
-                    {{ field }}
-                {% endif %}
-                {% endif %}
-                {% for error in field.errors %}
-                    <p class="help-block">{{ error }}</p>
-                {% endfor %}
-            </div>
+ <div class="modal-header">
+    <h5 class="modal-title">Create new Marker</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body bg-light">
+    {% for field in form %}
+      <div class="form-group_{{ field.id_for_label }}{% if field.errors %} invalid{% endif %}">
+        <label for="{{ field.id_for_label }}" id="{{ field.id_for_label }}_label">
+            {{ field.label }}
+        </label>
+      <div class="form-group row ml-1 col-lg-12">
+        {{ field }}
+      </div>
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
         {% endfor %}
-        {#    <input type="hidden" name="creator" value="{{ user.id }}">#}
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class="submit-btn btn btn-primary">Create</button>
-    </div>
+      </div>
+    {% endfor %}
+  </div>
+<script>
+    $('#id_latitude').prop('hidden', true).val(currentPosition.lat);
+    $('#id_longitude').prop('hidden', true).val(currentPosition.lng);
+    $('#id_creator').prop('hidden', true).val({{ user.id }});
+</script>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    <button type="submit" class="submit-btn btn btn-success">Create</button>
+  </div>
 </form>

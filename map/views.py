@@ -11,14 +11,21 @@ from bootstrap_modal_forms.generic import BSModalCreateView
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
-
 def index(request):
+    if request.is_ajax():
+        cluster_id = request.GET.get('regionId')
+        markers = Marker.objects.filter(marker_region=cluster_id)
+        context = {
+            'markers': markers,
+        }
+        return render(request, 'map/helpers/renderMarkers.html', context)
+
     regions_info_filepath = f'{BASE_DIR}/map/templates/ukraine.kml'
     regions_info = preprocess.preprocess_coords(regions_info_filepath)
-    marker = Marker.objects.all()
+    clusters = Region.objects.all()
     context = {
         'regions_info': regions_info,
-        'markers': marker
+        'clusters': clusters
     }
     return render(request, 'map/index.html', context)
 
@@ -36,6 +43,9 @@ class MarkerCreateView(BSModalCreateView):
     success_message = 'Success: Marker was created.'
     success_url = reverse_lazy('Home')
 
+
+def is_ajax(self):
+    return self.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 def marker_info_view(request):
     if request.method == 'GET':
