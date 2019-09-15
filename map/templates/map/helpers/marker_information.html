@@ -61,14 +61,18 @@
 
     .share {
         height: 100%;
+        cursor: pointer;
+    }
+    .share:hover {
+        opacity: 0.5;
     }
 
     .timestamp-content {
         font-size: 14px;
-        color: ;
     }
 </style>
 <div class="marker-content p-0">
+    {% csrf_token %}
     <div class="col-12">
         <div class="row header">
             <div class="col-md-12 py-3 pl-4 d-flex align-items-center">
@@ -83,8 +87,8 @@
                     <span class="email text-secondary ml-1">(shvetsovdi2@gmail.com)</span>
                 {% endif %}
                 <br/>
-                <span class="share ml-auto my-auto d-flex align-items-center mr-2"><i class="fas mr-1 fa-flag"></i> Повідомити</span>
-                <span class="share my-auto d-flex align-items-center mr-4"><i class="fas mr-1 fa-plus"></i> Стежити</span>
+                <span class="ml-auto my-auto d-flex align-items-center mr-2" ><i class="fas mr-1 fa-flag"></i> Повідомити</span>
+                <span class="share my-auto d-flex align-items-center mr-4" onclick="follow({{ marker.id }});"><i class="fas mr-1 fa-plus"></i> Стежити</span>
             </div>
             {#            {{ marker.creator.profile.first_name }}#}
         </div>
@@ -94,26 +98,26 @@
                     <div class="images mt-2" style="text-align: center;">
                         <div style="display: inline-block;">
                             <a class="fancybox" data-fancybox="marker-images"
-                               href="http://farm2.staticflickr.com/1669/23976340262_a5ca3859f6_b.jpg"
+                               href="{% static 'images/trob1.jpg' %}"
                                title="Twilight Memories (doraartem)">
-                                <img src="http://farm2.staticflickr.com/1669/23976340262_a5ca3859f6_m.jpg" alt=""/>
+                                <img style="width: 240px; height: 160px;" src="{% static 'images/trob1.jpg' %}" alt=""/>
                             </a>
                             <a class="fancybox" data-fancybox="marker-images"
-                               href="http://farm2.staticflickr.com/1459/23610702803_83655c7c56_b.jpg"
+                               href="{% static 'images/trob2.jpg' %}"
                                title="Electrical Power Lines and Pylons disappear over t.. (pautliubomir)">
-                                <img src="http://farm2.staticflickr.com/1459/23610702803_83655c7c56_m.jpg" alt=""/>
+                                <img style="width: 240px; height: 160px;" src="{% static 'images/trob2.jpg' %}" alt=""/>
                             </a>
                             <a class="fancybox" data-fancybox="marker-images"
-                               href="http://farm2.staticflickr.com/1617/24108587812_6c9825d0da_b.jpg"
+                               href="{% static 'images/trob3.jpg' %}"
                                title="Morning Godafoss (Brads5)">
-                                <img src="http://farm2.staticflickr.com/1617/24108587812_6c9825d0da_m.jpg" alt=""/>
+                                <img style="width: 240px; height: 160px;" src="{% static 'images/trob3.jpg' %}" alt=""/>
                             </a>
                             <a class="fancybox" data-fancybox="marker-images"
                                style="position:relative; text-align: center; color: white; opacity: 0.5;"
-                               href="http://farm4.staticflickr.com/3691/10185053775_701272da37_b.jpg"
+                               href="{% static 'images/trob1.jpg' %}"
                                title="Vertical - Special Edition! (cedarsphoto)">
-                                <img class="last-image"
-                                     src="http://farm4.staticflickr.com/3691/10185053775_701272da37_m.jpg"
+                                <img style="width: 240px; height: 160px;" class="last-image"
+                                     src="{% static 'images/trob1.jpg' %}"
                                      alt=""/>
                                 <div class="load-more">+12</div>
                             </a>
@@ -158,7 +162,6 @@
             </div>
             <div class="col-md-6 py-3 pl-4">
                 <div style="height: 100%;" class="like-dislike-block d-flex justify-content-end align-items-center">
-                    {% csrf_token %}
                     <span class="grid__item">
                         <button class="icobutton icobutton--thumbs-up"><span
                                 class="fa fa-thumbs-up {{ estimator.vote|get_like_dislike_color:'like' }} like fa-xs"></span></button>

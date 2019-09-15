@@ -7,4 +7,4 @@ class MarkerForm(BSModalForm):
     class Meta:
         model = Marker
         fields = ['name', 'description', 'longitude', 'latitude', 'marker_region', 'upload_key', 'creator']
-
+        widgets = {'upload_key': forms.ClearableFileInput(attrs={'multiple':True})}

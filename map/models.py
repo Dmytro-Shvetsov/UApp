@@ -1,5 +1,5 @@
 from django.db import models
-from authorization.models import User
+from django.contrib.auth.models import User
 from PIL import Image, ExifTags
 
 
@@ -54,8 +54,9 @@ class Marker(models.Model):
     marker_region = models.ForeignKey(Region, on_delete=models.CASCADE)
     upload_key = models.ImageField(upload_to='images/', null=True, blank=True)
     # image_storage = models.ForeignKey(ImageStorage, on_delete=models.CASCADE, default=1)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, default=-1)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, default=-1, related_name='user_creator_id')
     in_process = models.BooleanField(default=False)
+    follower = models.ManyToManyField(User, related_name='subscriber')
 
     def get_likes_count(self):
         return len(self.markerestimator_set.all().filter(vote=1))
