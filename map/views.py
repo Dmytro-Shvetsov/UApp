@@ -84,3 +84,23 @@ def estimate_marker_view(request):
         })
 
 
+def follow_view(request):
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return JsonResponse(
+                {
+                    'user_is_logged': 'no'
+                })
+
+        marker_id = request.POST.get('marker_id')
+        marker = Marker.objects.get(pk=int(marker_id))
+        try:
+            m = marker.user_set.get(user=request.user).delete()
+        except:
+            marker.follower.add(request.user)
+
+        marker.save()
+        return JsonResponse({
+            'user_is_logged': 'yes',
+            'success': 'true',
+        })

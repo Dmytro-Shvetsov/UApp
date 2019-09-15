@@ -451,4 +451,29 @@ function displayMarkerInfo(marker_entity) {
     })
 }
 
-
+function follow(marker_id) {
+    let data = {
+        'marker_id': marker_id,
+        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val()
+    };
+    $.ajax({
+        method: 'post',
+        url: '/map/follow/',
+        data: data,
+        dataType: 'html',
+        beforeSend: function () {
+            let loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i>';
+            if ($(".share").html() !== loadingText) {
+                $(".share").data('original-text', $(".share").html());
+                $(".share").html(loadingText);
+            }
+        },
+        success: function (response) {
+            $(".share").html('<i class="fas fa-user-times"></i>');
+        },
+        error: function (error) {
+            console.log(error);
+            alert('An error occured while loading page. Try later.');
+        }
+    })
+}

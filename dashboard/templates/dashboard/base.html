@@ -6,7 +6,7 @@
         $(document).ready(function () {
             let content_page = '{{ page }}/';
             $('.content').load('/dashboard/' + content_page);
-            $('.list-group-item a').click(function (event) {
+            $('.list-group-item > a').click(function (event) {
                 if (ajaxRequestIsLoading == false) {
                     event.preventDefault();
                     $(this).parent().addClass('active').siblings().removeClass('active');
@@ -43,4 +43,6 @@
 
 {% block content %}
 
+{% endblock %}
+{% block footer %}
 {% endblock %}
