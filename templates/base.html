@@ -62,9 +62,11 @@
 {% block additional_static_files %}
 {% endblock %}
 </body>
-<footer class="row">
-    <div class="col-12 copyright py-2">
-        All rights reserved <i class="far fa-copyright"></i>
-    </div>
-</footer>
+{% block footer %}
+    <footer class="row">
+        <div class="col-12 copyright py-2">
+            All rights reserved <i class="far fa-copyright"></i>
+        </div>
+    </footer>
+{% endblock %}
 </html>
