@@ -10,7 +10,7 @@
                 if (ajaxRequestIsLoading == false) {
                     event.preventDefault();
                     $(this).parent().addClass('active').siblings().removeClass('active');
-                    let page = $(this).text();
+                    let page = $(this).attr('id');
                     let url = '/dashboard/' + page.toLowerCase();
 
                     $.ajax({

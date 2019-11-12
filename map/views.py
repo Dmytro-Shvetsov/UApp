@@ -11,6 +11,7 @@ from bootstrap_modal_forms.generic import BSModalCreateView
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
+
 def index(request):
     if request.is_ajax():
         cluster_id = request.GET.get('regionId')
@@ -46,6 +47,7 @@ class MarkerCreateView(BSModalCreateView):
 
 def is_ajax(self):
     return self.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
 
 def marker_info_view(request):
     if request.method == 'GET':
