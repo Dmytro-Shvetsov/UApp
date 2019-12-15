@@ -53,10 +53,16 @@ def marker_info_view(request):
     if request.method == 'GET':
         marker_id = request.GET.get('marker_id')
         marker_obj = Marker.objects.get(pk=marker_id)
+
         estimator = MarkerEstimator.objects.get_or_create(user=marker_obj.creator, marker=marker_obj)[0]
+
+        user_is_followed = False
+        if Marker.objects.filter(follower__id=request.user.id).count() == 1:
+            user_is_followed = True
         context = {
             'marker': marker_obj,
-            'estimator': estimator
+            'estimator': estimator,
+            'user_is_followed': user_is_followed
         }
         return render(request, 'map/helpers/marker_information.html', context)
 
@@ -96,13 +102,17 @@ def follow_view(request):
 
         marker_id = request.POST.get('marker_id')
         marker = Marker.objects.get(pk=int(marker_id))
-        try:
-            m = marker.user_set.get(user=request.user).delete()
-        except:
+
+        user_followed = 'no'
+        if Marker.objects.filter(follower__id=request.user.id).count() == 1:
+            marker.follower.remove(request.user)
+        else:
+            user_followed = 'yes'
             marker.follower.add(request.user)
 
-        marker.save()
+
         return JsonResponse({
             'user_is_logged': 'yes',
-            'success': 'true',
+            'user_followed': user_followed,
         })
+
