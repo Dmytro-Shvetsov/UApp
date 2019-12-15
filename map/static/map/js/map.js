@@ -460,7 +460,7 @@ function follow(marker_id) {
         method: 'post',
         url: '/map/follow/',
         data: data,
-        dataType: 'html',
+        dataType: 'json',
         beforeSend: function () {
             let loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i>';
             if ($(".share").html() !== loadingText) {
@@ -469,11 +469,20 @@ function follow(marker_id) {
             }
         },
         success: function (response) {
-            $(".share").html('<i class="fas fa-user-times"></i>');
+
+            if(response['user_is_logged'] === 'yes'){
+                if(response.user_followed === 'yes') {
+                    $(".share").html('<i class="fas fa-user-times mr-1"></i> Unfollow');
+                }else{
+                    $(".share").html('<i class="fas mr-1 fa-plus"></i> Follow');
+                }
+            }else{
+                window.location.replace('/auth/login/')
+            }
         },
         error: function (error) {
             console.log(error);
             alert('An error occured while loading page. Try later.');
         }
-    })
+    });
 }

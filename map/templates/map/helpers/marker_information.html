@@ -87,8 +87,12 @@
                     <span class="email text-secondary ml-1">(shvetsovdi2@gmail.com)</span>
                 {% endif %}
                 <br/>
-                <span class="ml-auto my-auto d-flex align-items-center mr-2" ><i class="fas mr-1 fa-flag"></i> Повідомити</span>
-                <span class="share my-auto d-flex align-items-center mr-4" onclick="follow({{ marker.id }});"><i class="fas mr-1 fa-plus"></i> Стежити</span>
+                <span class="ml-auto my-auto d-flex align-items-center mr-2" ><i class="fas mr-1 fa-flag"></i> Report</span>
+                {% if user_is_followed and user_is_logged %}
+                    <span class="share my-auto d-flex align-items-center mr-4" onclick="follow({{ marker.id }});"><i class="fas mr-1 fa-user-times"></i> Unfollow</span>
+                {% else %}
+                    <span class="share my-auto d-flex align-items-center mr-4" onclick="follow({{ marker.id }});"><i class="fas mr-1 fa-plus"></i> Follow</span>
+                {% endif %}
             </div>
             {#            {{ marker.creator.profile.first_name }}#}
         </div>
@@ -98,29 +102,30 @@
                     <div class="images mt-2" style="text-align: center;">
                         <div style="display: inline-block;">
                             <a class="fancybox" data-fancybox="marker-images"
-                               href="{% static 'images/trob1.jpg' %}"
+{#                               href="{% static 'images/trob1.jpg' %}"#}
+                                    href ="{{ marker.image }}"
                                title="Twilight Memories (doraartem)">
                                 <img style="width: 240px; height: 160px;" src="{% static 'images/trob1.jpg' %}" alt=""/>
                             </a>
-                            <a class="fancybox" data-fancybox="marker-images"
-                               href="{% static 'images/trob2.jpg' %}"
-                               title="Electrical Power Lines and Pylons disappear over t.. (pautliubomir)">
-                                <img style="width: 240px; height: 160px;" src="{% static 'images/trob2.jpg' %}" alt=""/>
-                            </a>
-                            <a class="fancybox" data-fancybox="marker-images"
-                               href="{% static 'images/trob3.jpg' %}"
-                               title="Morning Godafoss (Brads5)">
-                                <img style="width: 240px; height: 160px;" src="{% static 'images/trob3.jpg' %}" alt=""/>
-                            </a>
-                            <a class="fancybox" data-fancybox="marker-images"
-                               style="position:relative; text-align: center; color: white; opacity: 0.5;"
-                               href="{% static 'images/trob1.jpg' %}"
-                               title="Vertical - Special Edition! (cedarsphoto)">
-                                <img style="width: 240px; height: 160px;" class="last-image"
-                                     src="{% static 'images/trob1.jpg' %}"
-                                     alt=""/>
-                                <div class="load-more">+12</div>
-                            </a>
+{#                            <a class="fancybox" data-fancybox="marker-images"#}
+{#                               href="{% static 'images/trob2.jpg' %}"#}
+{#                               title="Electrical Power Lines and Pylons disappear over t.. (pautliubomir)">#}
+{#                                <img style="width: 240px; height: 160px;" src="{% static 'images/trob2.jpg' %}" alt=""/>#}
+{#                            </a>#}
+{#                            <a class="fancybox" data-fancybox="marker-images"#}
+{#                               href="{% static 'images/trob3.jpg' %}"#}
+{#                               title="Morning Godafoss (Brads5)">#}
+{#                                <img style="width: 240px; height: 160px;" src="{% static 'images/trob3.jpg' %}" alt=""/>#}
+{#                            </a>#}
+{#                            <a class="fancybox" data-fancybox="marker-images"#}
+{#                               style="position:relative; text-align: center; color: white; opacity: 0.5;"#}
+{#                               href="{% static 'images/trob1.jpg' %}"#}
+{#                               title="Vertical - Special Edition! (cedarsphoto)">#}
+{#                                <img style="width: 240px; height: 160px;" class="last-image"#}
+{#                                     src="{% static 'images/trob1.jpg' %}"#}
+{#                                     alt=""/>#}
+{#                                <div class="load-more">+12</div>#}
+{#                            </a>#}
                         </div>
                     </div>
                 </div>
