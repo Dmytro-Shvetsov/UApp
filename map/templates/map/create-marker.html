@@ -22,6 +22,8 @@
     {% endfor %}
   </div>
 <script>
+    $('#id_in_process_label').prop('hidden', true);
+    $('#id_in_process').prop('hidden', true);
     $('#id_latitude').prop('hidden', true).val(currentPosition.lat);
     $('#id_longitude').prop('hidden', true).val(currentPosition.lng);
     $('#id_creator').prop('hidden', true).val({{ user.id }});

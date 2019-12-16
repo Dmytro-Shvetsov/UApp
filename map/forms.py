@@ -6,5 +6,4 @@ from bootstrap_modal_forms.forms import BSModalForm
 class MarkerForm(BSModalForm):
     class Meta:
         model = Marker
-        fields = ['name', 'description', 'longitude', 'latitude', 'marker_region', 'upload_key', 'creator']
-        widgets = {'upload_key': forms.ClearableFileInput(attrs={'multiple':True})}
+        fields = ['name', 'description', 'longitude', 'latitude', 'marker_region', 'image', 'creator', 'in_process']
