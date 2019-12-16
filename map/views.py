@@ -59,7 +59,6 @@ def marker_info_view(request):
         user_is_followed = False
         if Marker.objects.filter(follower__id=request.user.id).count() == 1:
             user_is_followed = True
-
         user_is_logged = request.user.is_authenticated
         context = {
             'marker': marker_obj,

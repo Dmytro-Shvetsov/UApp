@@ -13,6 +13,12 @@ class UserProfile(models.Model):
     image = models.ImageField(upload_to='images/profile_images', default='images/profile_images/default-avatar.png',
                               blank=True)
 
+    @property
+    def full_name(self):
+        if not (self.first_name or self.last_name):
+            return self.user.username
+        return f'{self.first_name} {self.last_name}'
+
     def __str__(self):
         return self.user.username
 

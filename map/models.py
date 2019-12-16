@@ -43,7 +43,7 @@ class Marker(models.Model):
         img = Image.open(self.image.path)
 
         exif = img._getexif()
-        output_size = (350, 350)
+        output_size = (1280, 960)
         img.thumbnail(output_size)
         orientation_key = 274
         if exif and orientation_key in exif:

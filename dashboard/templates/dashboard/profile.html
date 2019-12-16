@@ -1,7 +1,7 @@
 {% load custom_tags %}
 {% load staticfiles %}
 <div>
-    <h2>Публічний профіль</h2>
+    <h2>Your profile</h2>
     <hr/>
 </div>
 <div>
@@ -21,7 +21,7 @@
                             </div>
                             <div class="form-group col-sm-7">
                                 <label for="id_first_name" class="col-sm-12 control-label">
-                                    <b>Ім'я</b>
+                                    <b>First name</b>
                                 </label>
 
                                 <div class="col-sm-12">
@@ -31,7 +31,7 @@
 
                             <div class="form-group col-sm-7">
                                 <label for="id_last_name" class="col-sm-12 control-label">
-                                    <b>Прізвище</b>
+                                    <b>Last name</b>
                                 </label>
                                 <div class="col-sm-12">
                                     {{ update_profile_form.last_name }}
@@ -40,7 +40,7 @@
 
                             <div class="form-group col-sm-7">
                                 <label for="id_bio" class="col-sm-12 control-label">
-                                    <b>Розкажіть нам про себе</b>
+                                    <b>Tell us about yourself</b>
                                 </label>
                                 <div class="col-sm-12">
                                     {{ update_profile_form.bio }}
@@ -49,7 +49,7 @@
 
                             <div class="form-group col-sm-7">
                                 <label for="id_company" class="col-sm-12 control-label">
-                                    <b>Компанія</b>
+                                    <b>Company</b>
                                 </label>
                                 <div class="col-sm-12">
                                     {{ update_profile_form.company }}
@@ -58,7 +58,7 @@
 
                             <div class="form-group col-sm-7">
                                 <label for="id_current_position" class="col-sm-12 control-label">
-                                    <b>Ким працюєте</b>
+                                    <b>Position</b>
                                 </label>
                                 <div class="col-sm-12">
                                     {{ update_profile_form.current_position }}
@@ -69,9 +69,7 @@
                                 <div class="custom-control custom-checkbox">
                                     {{ update_profile_form.user_email_is_public }}
                                     <label class="custom-control-label" for="id_user_email_is_public">
-                                        Показувати ваш
-                                        E-mail іншим
-                                        користувачам</label></div>
+                                        Display your email to others</label></div>
                             </div>
                         </form>
                     </div>

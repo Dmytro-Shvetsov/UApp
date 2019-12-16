@@ -32,10 +32,10 @@
                             <img src="{% static 'images/logo.png' %}" style="height: 38px; width: 38px;"/>
                         </a>
                     </li>
-                    <li><a class="nav-link" href="#">Про проект</a></li>
-                    <li><a class="nav-link" href="#">Як це працює</a></li>
-                    <li><a class="nav-link" href="{% url 'map' %}">Карта</a></li>
-                    <li><a class="nav-link" href="#">Інвестори</a></li>
+                    <li><a class="nav-link" href="#">About</a></li>
+                    <li><a class="nav-link" href="#">How does it work?</a></li>
+                    <li><a class="nav-link" href="{% url 'map' %}">Map</a></li>
+{#                    <li><a class="nav-link" href="#">Investors</a></li>#}
                 </ul>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
@@ -43,8 +43,8 @@
                     <a class="fa-container mr-2" href="{% url 'dashboard' %}"><i class="fa fa-user fa-lg mr-3"></i></a>
                     <a class="fa-container" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt fa-lg pr-3"></i></a>
                 {% else %}
-                    <a class="log-in btn btn-secondary btn-lg mx-1 mr-3 text-light" href="{% url 'login' %}">Увійти</a>
-                    <a class="sign-up btn btn-dark btn-lg text-light" href="{% url 'register' %}">Зареєструватись</a>
+                    <a class="log-in btn btn-secondary btn-lg mx-1 mr-3 text-light" href="{% url 'login' %}">Log in</a>
+                    <a class="sign-up btn btn-dark btn-lg text-light" href="{% url 'register' %}">Sign Up</a>
                 {% endif %}
             </div>
         </nav>
